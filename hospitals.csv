@@ -1,3 +1,4 @@
-病院名,住所,都道府県,市町村,代表電話番号,所属ドクター,所属看護師,所属臨床工学技士,その他,メモ
+Name,Address,Prefecture,City,Phone,Doctors,Nurses,Engineers,Other,Memo
 ,,,,,,,,,
-テスト病院,,香川県,高松市,,,,,,
+,,,,,,,,,
+テスト病院2,,香川県,高松市,,,,,,テスト
