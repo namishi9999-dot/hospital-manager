@@ -43,7 +43,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ── Header ── */
         .header {
             background: linear-gradient(135deg, #1a3a5c 0%, #1a6fc4 60%, #2980b9 100%);
             color: #fff;
@@ -67,7 +66,6 @@
         .sync-badge.syncing { background: rgba(241,196,15,.35); }
         .sync-badge.error   { background: rgba(231,76,60,.35); }
 
-        /* ── Tab Bar ── */
         .tab-bar {
             display: flex;
             background: var(--card);
@@ -82,7 +80,7 @@
             text-align: center;
             background: none;
             border: none;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--text-sub);
             cursor: pointer;
@@ -94,7 +92,6 @@
             border-bottom-color: var(--primary);
         }
 
-        /* ── Container ── */
         .container {
             max-width: 720px;
             margin: 0 auto;
@@ -103,7 +100,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* ── Dashboard Stats Grid ── */
         .dash-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -130,31 +126,26 @@
         }
         .dash-card.c-all::before    { background: var(--primary); }
         .dash-card.c-pref::before   { background: var(--secondary); }
-        .dash-card.c-out::before    { background: var(--success); }
         .dash-card.c-target::before { background: var(--accent); }
+        .dash-card.c-schedule::before { background: #8e44ad; }
 
         .dash-card.selected { border-color: var(--primary); background: var(--primary-light); }
         .dash-card.c-pref.selected   { border-color: var(--secondary); background: #eef0f7; }
-        .dash-card.c-out.selected    { border-color: var(--success); background: var(--success-light); }
         .dash-card.c-target.selected { border-color: var(--accent); background: var(--accent-light); }
+        .dash-card.c-schedule.selected { border-color: #8e44ad; background: #f3e8f9; }
 
         .dash-card:active { transform: scale(.97); }
         .dash-icon { font-size: 22px; margin-bottom: 4px; }
         .dash-num  { font-size: 30px; font-weight: 800; line-height: 1.1; }
         .dash-label { font-size: 11px; color: var(--text-sub); font-weight: 600; margin-top: 4px; }
 
-        /* ── Sub-view header ── */
         .view-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 16px 0 10px;
         }
-        .view-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text);
-        }
+        .view-title { font-size: 16px; font-weight: 800; color: var(--text); }
         .view-count {
             font-size: 12px;
             color: var(--text-sub);
@@ -164,10 +155,9 @@
             border-radius: 12px;
         }
 
-        /* ── Search ── */
         .search-wrap { margin-bottom: 14px; position: relative; }
         .search-wrap::before {
-            content: '🔍';
+            content: '\01F50D';
             position: absolute;
             left: 14px;
             top: 50%;
@@ -185,7 +175,6 @@
         }
         .search-input:focus { outline: none; border-color: var(--primary); }
 
-        /* ── Prefecture Group ── */
         .pref-group {
             background: var(--card);
             border-radius: var(--radius);
@@ -228,7 +217,6 @@
         }
         .pref-items.open { display: block; }
 
-        /* ── Hospital Card ── */
         .h-card {
             display: flex;
             align-items: center;
@@ -269,7 +257,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .h-badges { display: flex; gap: 4px; margin-left: 8px; flex-shrink: 0; }
+        .h-badges { display: flex; gap: 4px; margin-left: 8px; flex-shrink: 0; flex-wrap: wrap; }
         .h-badge {
             font-size: 10px;
             padding: 2px 8px;
@@ -278,10 +266,8 @@
             white-space: nowrap;
         }
         .h-badge-target { background: var(--accent-light); color: #b45309; }
-        .h-badge-out    { background: var(--success-light); color: #15803d; }
         .h-chevron { color: var(--border); margin-left: 6px; font-size: 16px; }
 
-        /* ── Refresh Bar ── */
         .refresh-bar {
             display: flex;
             justify-content: flex-end;
@@ -300,7 +286,6 @@
         }
         .btn-refresh:active { background: var(--primary-light); }
 
-        /* ── Empty State ── */
         .empty {
             text-align: center;
             padding: 50px 20px;
@@ -309,12 +294,12 @@
         .empty-icon { font-size: 40px; margin-bottom: 10px; }
         .empty-text { font-size: 14px; }
 
-        /* ── Forms ── */
         .form-card {
             background: var(--card);
             border-radius: var(--radius);
             padding: 22px 18px;
             box-shadow: var(--shadow);
+            margin-bottom: 16px;
         }
         .form-card h2 { font-size: 18px; font-weight: 800; margin-bottom: 18px; }
         .fg { margin-bottom: 16px; }
@@ -335,6 +320,7 @@
             transition: border-color .2s;
         }
         .fi:focus { outline: none; border-color: var(--primary); }
+        select.fi { appearance: auto; }
         .help { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
         .code-inline {
             background: #f0f0f5;
@@ -353,7 +339,6 @@
         .chk-row input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); }
         .chk-row label { font-size: 14px; cursor: pointer; user-select: none; }
 
-        /* ── Buttons ── */
         .btn {
             display: block;
             width: 100%;
@@ -371,6 +356,11 @@
         .btn-primary { background: var(--primary); color: #fff; }
         .btn-success { background: var(--success); color: #fff; }
         .btn-danger  { background: var(--danger);  color: #fff; }
+        .btn-outline {
+            background: #fff;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
         .btn-sm {
             display: inline-block;
             width: auto;
@@ -379,7 +369,6 @@
             margin-right: 8px;
         }
 
-        /* ── Modals ── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -396,7 +385,7 @@
             background: var(--card);
             border-radius: var(--radius);
             padding: 22px 18px;
-            max-width: 560px;
+            max-width: 620px;
             width: 100%;
             margin: auto;
             max-height: 90vh;
@@ -431,7 +420,6 @@
         .detail-badges { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
         .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
 
-        /* ── Notification ── */
         .toast {
             position: fixed;
             top: 90px;
@@ -454,32 +442,184 @@
         .toast.success { border-left: 4px solid var(--success); }
         .toast.error   { border-left: 4px solid var(--danger); }
 
-        /* ── Misc ── */
         textarea.fi { font-family: inherit; min-height: 90px; resize: vertical; }
+
+        /* Sub-tab switcher */
+        .sub-tab-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .sub-tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .sub-tab-btn.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        /* Tag list for settings */
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .tag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .tag-del {
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-size: 16px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+
+        /* Schedule table */
+        .sched-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .sched-table th, .sched-table td {
+            border: 1px solid var(--border);
+            padding: 4px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .sched-table th {
+            background: var(--bg);
+            font-weight: 700;
+            font-size: 11px;
+        }
+        .sched-table select {
+            width: 100%;
+            font-size: 11px;
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: #fff;
+        }
+        .sched-day-header {
+            background: var(--primary-light) !important;
+            font-weight: 800;
+        }
+
+        /* Filter checkboxes grid */
+        .filter-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 8px 0 14px;
+        }
+        .filter-chk {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .filter-chk input { width: 16px; height: 16px; accent-color: var(--primary); }
+        .filter-chk.checked { border-color: var(--primary); background: var(--primary-light); }
+
+        .inline-add {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .inline-add input { flex: 1; }
+        .inline-add button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin: 20px 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .staff-section {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 2px solid var(--border);
+        }
+        .staff-section h3 {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        .staff-mini-card {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .staff-mini-card .s-name { font-weight: 700; margin-right: 8px; }
+        .staff-mini-card .s-type { color: var(--text-sub); font-size: 12px; }
 
         @media (max-width: 400px) {
             .dash-num { font-size: 26px; }
             .h-name { font-size: 14px; }
+            .tab-btn { font-size: 11px; }
         }
     </style>
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
-    <h1>🏥 病院顧客管理</h1>
-    <div class="header-sub">GitHub連携版 v4.0</div>
+    <h1>&#x1F3E5; 病院顧客管理</h1>
+    <div class="header-sub">GitHub連携版 v5.0</div>
     <div class="sync-badge" id="syncStatus">未接続</div>
 </div>
 
-<!-- Tab Bar -->
 <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('list', this)">📋 病院一覧</button>
-    <button class="tab-btn" onclick="switchTab('add', this)">➕ 新規追加</button>
-    <button class="tab-btn" onclick="switchTab('setup', this)">⚙️ 設定</button>
+    <button class="tab-btn active" onclick="switchTab('list', this)">&#x1F4CB; 病院一覧</button>
+    <button class="tab-btn" onclick="switchTab('staff', this)">&#x1F464; 医療従事者</button>
+    <button class="tab-btn" onclick="switchTab('add', this)">&#x2795; 新規追加</button>
+    <button class="tab-btn" onclick="switchTab('setup', this)">&#x2699;&#xFE0F; 設定</button>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <!-- Detail Modal -->
@@ -491,8 +631,8 @@
         </div>
         <div id="detailBody"></div>
         <div class="modal-actions">
-            <button class="btn btn-primary btn-sm" onclick="openEditFromDetail()">✏️ 編集</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteFromDetail()">🗑️ 削除</button>
+            <button class="btn btn-primary btn-sm" onclick="openEditFromDetail()">&#x270F;&#xFE0F; 編集</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteFromDetail()">&#x1F5D1;&#xFE0F; 削除</button>
         </div>
     </div>
 </div>
@@ -508,69 +648,135 @@
     </div>
 </div>
 
-<div class="container">
+<!-- Staff Detail Modal -->
+<div class="modal-overlay" id="staffDetailModal">
+    <div class="modal-box">
+        <div class="modal-top">
+            <div class="modal-title">医療従事者詳細</div>
+            <button class="modal-x" onclick="closeModal('staffDetailModal')">&times;</button>
+        </div>
+        <div id="staffDetailBody"></div>
+        <div class="modal-actions">
+            <button class="btn btn-primary btn-sm" onclick="openStaffEditFromDetail()">&#x270F;&#xFE0F; 編集</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteStaffFromDetail()">&#x1F5D1;&#xFE0F; 削除</button>
+        </div>
+    </div>
+</div>
 
+<!-- Staff Edit Modal -->
+<div class="modal-overlay" id="staffEditModal">
+    <div class="modal-box">
+        <div class="modal-top">
+            <div class="modal-title">医療従事者の編集</div>
+            <button class="modal-x" onclick="closeModal('staffEditModal')">&times;</button>
+        </div>
+        <div id="staffEditFormWrap"></div>
+    </div>
+</div>
+
+<!-- Schedule Modal -->
+<div class="modal-overlay" id="scheduleModal">
+    <div class="modal-box" style="max-width:700px;">
+        <div class="modal-top">
+            <div class="modal-title">外来スケジュール</div>
+            <button class="modal-x" onclick="closeModal('scheduleModal')">&times;</button>
+        </div>
+        <div id="scheduleBody"></div>
+    </div>
+</div>
+
+<div class="container">
     <!-- 病院一覧 Tab -->
     <div id="tab-list" class="tab-content active">
         <div class="dash-grid" id="dashGrid"></div>
         <div id="listSubView"></div>
     </div>
 
+    <!-- 医療従事者 Tab -->
+    <div id="tab-staff" class="tab-content">
+        <div class="view-header">
+            <div class="view-title">医療従事者一覧</div>
+            <div class="view-count" id="staffCount">0件</div>
+        </div>
+        <div class="search-wrap"><input type="text" class="search-input" id="staffSearch" placeholder="名前・病院名・職種で検索..."></div>
+        <div id="staffList"></div>
+    </div>
+
     <!-- 新規追加 Tab -->
     <div id="tab-add" class="tab-content">
-        <div class="form-card">
-            <h2>新規施設の登録</h2>
-            <div class="fg">
-                <label class="fl">施設名 *</label>
-                <input type="text" class="fi" id="inp-name" required>
-            </div>
-            <div class="fg">
-                <label class="fl">都道府県 *</label>
-                <input type="text" class="fi" id="inp-pref" required>
-            </div>
-            <div class="fg">
-                <label class="fl">市町村 *</label>
-                <input type="text" class="fi" id="inp-city" required>
-            </div>
-            <div class="fg">
-                <label class="fl">住所（詳細）</label>
-                <input type="text" class="fi" id="inp-addr">
-            </div>
-            <div class="fg">
-                <label class="fl">代表電話番号</label>
-                <input type="tel" class="fi" id="inp-phone">
-            </div>
-            <div class="fg">
-                <label class="fl">所属ドクター</label>
-                <input type="text" class="fi" id="inp-doc">
-            </div>
-            <div class="fg">
-                <label class="fl">所属看護師</label>
-                <input type="text" class="fi" id="inp-nurse">
-            </div>
-            <div class="fg">
-                <label class="fl">所属臨床工学技士</label>
-                <input type="text" class="fi" id="inp-eng">
-            </div>
-            <div class="fg">
-                <label class="fl">その他</label>
-                <input type="text" class="fi" id="inp-other">
-            </div>
-            <div class="fg">
-                <label class="fl">メモ</label>
-                <textarea class="fi" id="inp-memo"></textarea>
-            </div>
-            <div class="fg">
-                <div class="chk-row">
-                    <input type="checkbox" id="inp-outpatient">
-                    <label for="inp-outpatient">透析外来あり</label>
+        <div class="sub-tab-bar">
+            <button class="sub-tab-btn active" onclick="switchAddSub('hospital', this)">&#x1F3E5; 施設を追加</button>
+            <button class="sub-tab-btn" onclick="switchAddSub('staffadd', this)">&#x1F464; 医療従事者を追加</button>
+        </div>
+
+        <div id="sub-hospital" class="tab-content active">
+            <div class="form-card">
+                <h2>新規施設の登録</h2>
+                <div class="fg">
+                    <label class="fl">施設名 *</label>
+                    <input type="text" class="fi" id="inp-name" required>
                 </div>
-                <div class="chk-row">
-                    <input type="checkbox" id="inp-target">
-                    <label for="inp-target">営業ターゲット施設</label>
+                <div class="fg">
+                    <label class="fl">都道府県 *</label>
+                    <input type="text" class="fi" id="inp-pref" required>
                 </div>
+                <div class="fg">
+                    <label class="fl">市町村 *</label>
+                    <input type="text" class="fi" id="inp-city" required>
+                </div>
+                <div class="fg">
+                    <label class="fl">住所（詳細）</label>
+                    <input type="text" class="fi" id="inp-addr">
+                </div>
+                <div class="fg">
+                    <label class="fl">代表電話番号</label>
+                    <input type="tel" class="fi" id="inp-phone">
+                </div>
+                <div class="fg">
+                    <label class="fl">その他</label>
+                    <input type="text" class="fi" id="inp-other">
+                </div>
+                <div class="fg">
+                    <label class="fl">メモ</label>
+                    <textarea class="fi" id="inp-memo"></textarea>
+                </div>
+                <div class="fg">
+                    <label class="fl">ターゲット分類</label>
+                    <div id="inp-targets-wrap">（設定タブでターゲットを追加してください）</div>
+                </div>
+                <button class="btn btn-success" onclick="addHospital()">&#x2705; 登録する</button>
             </div>
-            <button class="btn btn-success" onclick="addHospital()">✅ 登録する</button>
+        </div>
+
+        <div id="sub-staffadd" class="tab-content">
+            <div class="form-card">
+                <h2>新規医療従事者の登録</h2>
+                <div class="fg">
+                    <label class="fl">氏名 *</label>
+                    <input type="text" class="fi" id="inp-sname" required>
+                </div>
+                <div class="fg">
+                    <label class="fl">所属施設 *</label>
+                    <select class="fi" id="inp-shospital"></select>
+                </div>
+                <div class="fg">
+                    <label class="fl">職種 *</label>
+                    <select class="fi" id="inp-sjobtype"></select>
+                </div>
+                <div class="fg">
+                    <label class="fl">電話番号</label>
+                    <input type="tel" class="fi" id="inp-sphone">
+                </div>
+                <div class="fg">
+                    <label class="fl">メールアドレス</label>
+                    <input type="email" class="fi" id="inp-semail">
+                </div>
+                <div class="fg">
+                    <label class="fl">メモ</label>
+                    <textarea class="fi" id="inp-smemo"></textarea>
+                </div>
+                <button class="btn btn-success" onclick="addStaff()">&#x2705; 登録する</button>
+            </div>
         </div>
     </div>
 
@@ -590,10 +796,30 @@
             <div class="fg">
                 <label class="fl">Personal Access Token</label>
                 <input type="password" class="fi" id="cfgToken" placeholder="ghp_xxxxxxxxxxxxx">
-                <div class="help">GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)<br>権限: <span class="code-inline">repo</span> にチェック</div>
+                <div class="help">GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Tokens (classic)<br>権限: <span class="code-inline">repo</span> にチェック</div>
             </div>
-            <button class="btn btn-primary" onclick="saveCfg()">💾 設定を保存</button>
-            <button class="btn btn-success" onclick="testConn()">🔌 接続テスト</button>
+            <button class="btn btn-primary" onclick="saveCfg()">&#x1F4BE; 設定を保存</button>
+            <button class="btn btn-success" onclick="testConn()">&#x1F50C; 接続テスト</button>
+        </div>
+
+        <div class="form-card">
+            <h2>ターゲット分類の管理</h2>
+            <p class="help" style="margin-bottom:12px;">施設に設定できるターゲット分類を管理します。</p>
+            <div class="inline-add">
+                <input type="text" class="fi" id="newTargetName" placeholder="ターゲット名を入力...">
+                <button onclick="addTarget()">追加</button>
+            </div>
+            <div class="tag-list" id="targetTagList"></div>
+        </div>
+
+        <div class="form-card">
+            <h2>職種の管理</h2>
+            <p class="help" style="margin-bottom:12px;">医療従事者に設定できる職種を管理します。</p>
+            <div class="inline-add">
+                <input type="text" class="fi" id="newJobTypeName" placeholder="職種名を入力...">
+                <button onclick="addJobType()">追加</button>
+            </div>
+            <div class="tag-list" id="jobTypeTagList"></div>
         </div>
     </div>
 </div>
@@ -602,12 +828,17 @@
 /* ═══════════════════════════════════════
    STATE
    ═══════════════════════════════════════ */
-let hospitals = [];
-let cfg = null;
-let currentIdx = -1;
-let currentView = null; // null | 'all' | 'pref' | 'out' | 'target'
-let dataLoaded = false;
-let openPrefs = {};
+var hospitals = [];
+var staffMembers = [];
+var targets = [];
+var jobTypes = [];
+var schedules = [];
+var cfg = null;
+var currentIdx = -1;
+var currentStaffIdx = -1;
+var currentView = null;
+var dataLoaded = false;
+var openPrefs = {};
 
 /* ─── Util ─── */
 function esc(s) {
@@ -630,23 +861,35 @@ function syncBadge(cls, txt) {
     el.textContent = txt;
 }
 
+function genId() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
 /* ═══════════════════════════════════════
    TABS
    ═══════════════════════════════════════ */
 function switchTab(name, el) {
-    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-bar .tab-btn').forEach(function(b) { b.classList.remove('active'); });
     el.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelectorAll('.container > .tab-content').forEach(function(c) { c.classList.remove('active'); });
     document.getElementById('tab-' + name).classList.add('active');
 
     if (name === 'list') {
-        if (!dataLoaded && cfg) {
-            loadFromGitHub();
-        } else {
-            renderDash();
-            renderSubView();
-        }
+        if (!dataLoaded && cfg) { loadAllFromGitHub(); }
+        else { renderDash(); renderSubView(); }
     }
+    if (name === 'staff') { renderStaffList(); }
+    if (name === 'add') { refreshAddFormSelects(); }
+    if (name === 'setup') { renderTargetTags(); renderJobTypeTags(); }
+}
+
+function switchAddSub(name, el) {
+    el.parentElement.querySelectorAll('.sub-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    el.classList.add('active');
+    document.getElementById('sub-hospital').classList.remove('active');
+    document.getElementById('sub-staffadd').classList.remove('active');
+    document.getElementById('sub-' + name).classList.add('active');
+    refreshAddFormSelects();
 }
 
 /* ═══════════════════════════════════════
@@ -679,34 +922,83 @@ function loadCfg() {
 function testConn() {
     if (!cfg) { toast('まず設定を保存してください','error'); return; }
     syncBadge('syncing','接続中...');
-    fetch('https://api.github.com/repos/' + cfg.username + '/' + cfg.repo, {
-        headers: { 'Authorization': 'token ' + cfg.token, 'Accept': 'application/vnd.github.v3+json' }
-    }).then(function(r) {
-        if (r.ok) { toast('✅ 接続成功！'); syncBadge('synced','接続成功'); }
-        else { toast('❌ 接続失敗','error'); syncBadge('error','接続失敗'); }
+    ghFetch('').then(function(r) {
+        if (r.ok) { toast('接続成功！'); syncBadge('synced','接続成功'); }
+        else { toast('接続失敗','error'); syncBadge('error','接続失敗'); }
     }).catch(function() {
-        toast('❌ 接続失敗','error'); syncBadge('error','接続失敗');
+        toast('接続失敗','error'); syncBadge('error','接続失敗');
     });
 }
 
 /* ═══════════════════════════════════════
-   GITHUB DATA I/O
+   GITHUB API HELPERS
    ═══════════════════════════════════════ */
-function loadFromGitHub() {
+function ghFetch(path, opts) {
+    var url = 'https://api.github.com/repos/' + cfg.username + '/' + cfg.repo + (path ? '/' + path : '');
+    var headers = { 'Authorization': 'token ' + cfg.token, 'Accept': 'application/vnd.github.v3+json' };
+    return fetch(url, Object.assign({ headers: headers }, opts || {}));
+}
+
+function ghGetFile(filename) {
+    return ghFetch('contents/' + filename).then(function(r) {
+        if (!r.ok) return null;
+        return r.json();
+    }).catch(function() { return null; });
+}
+
+function ghPutFile(filename, content, sha) {
+    var body = { message: 'Update ' + filename, content: btoa(unescape(encodeURIComponent(content))) };
+    if (sha) body.sha = sha;
+    return ghFetch('contents/' + filename, {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + cfg.token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+}
+
+/* ═══════════════════════════════════════
+   LOAD ALL FROM GITHUB
+   ═══════════════════════════════════════ */
+function loadAllFromGitHub() {
     if (!cfg) return;
     syncBadge('syncing','読み込み中...');
-    fetch('https://api.github.com/repos/' + cfg.username + '/' + cfg.repo + '/contents/hospitals.csv', {
-        headers: { 'Authorization': 'token ' + cfg.token, 'Accept': 'application/vnd.github.v3+json' }
-    }).then(function(r) {
-        if (!r.ok) throw new Error('ファイルが見つかりません');
-        return r.json();
-    }).then(function(d) {
-        var csv = decodeURIComponent(escape(atob(d.content)));
-        parseCSV(csv);
+    Promise.all([
+        ghGetFile('hospitals.csv'),
+        ghGetFile('staff.csv'),
+        ghGetFile('targets.csv'),
+        ghGetFile('jobtypes.csv'),
+        ghGetFile('schedules.csv')
+    ]).then(function(results) {
+        if (results[0]) {
+            var csv = decodeURIComponent(escape(atob(results[0].content.replace(/\n/g,''))));
+            parseHospitalsCSV(csv);
+        }
+        if (results[1]) {
+            var csv = decodeURIComponent(escape(atob(results[1].content.replace(/\n/g,''))));
+            parseStaffCSV(csv);
+        }
+        if (results[2]) {
+            var csv = decodeURIComponent(escape(atob(results[2].content.replace(/\n/g,''))));
+            parseTargetsCSV(csv);
+        }
+        if (results[3]) {
+            var csv = decodeURIComponent(escape(atob(results[3].content.replace(/\n/g,''))));
+            parseJobTypesCSV(csv);
+        } else {
+            if (jobTypes.length === 0) {
+                jobTypes = ['ドクター', '看護師', '臨床工学技士'];
+            }
+        }
+        if (results[4]) {
+            var csv = decodeURIComponent(escape(atob(results[4].content.replace(/\n/g,''))));
+            parseSchedulesCSV(csv);
+        }
         dataLoaded = true;
         syncBadge('synced','同期完了');
         renderDash();
         renderSubView();
+        renderTargetTags();
+        renderJobTypeTags();
     }).catch(function(e) {
         syncBadge('error','読み込みエラー');
         toast('読み込み失敗: ' + e.message, 'error');
@@ -715,27 +1007,16 @@ function loadFromGitHub() {
     });
 }
 
-function saveToGitHub() {
+/* ═══════════════════════════════════════
+   SAVE INDIVIDUAL FILES TO GITHUB
+   ═══════════════════════════════════════ */
+function saveHospitalsToGitHub() {
     if (!cfg) return Promise.resolve(false);
     syncBadge('syncing','保存中...');
-
-    return fetch('https://api.github.com/repos/' + cfg.username + '/' + cfg.repo + '/contents/hospitals.csv', {
-        headers: { 'Authorization': 'token ' + cfg.token, 'Accept': 'application/vnd.github.v3+json' }
-    }).then(function(gr) {
-        if (gr.ok) return gr.json().then(function(d) { return d.sha; });
-        return null;
-    }).then(function(sha) {
-        var csv = generateCSV();
-        var content = btoa(unescape(encodeURIComponent(csv)));
-        var body = { message: 'Update hospitals data', content: content };
-        if (sha) body.sha = sha;
-        return fetch('https://api.github.com/repos/' + cfg.username + '/' + cfg.repo + '/contents/hospitals.csv', {
-            method: 'PUT',
-            headers: { 'Authorization': 'token ' + cfg.token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-    }).then(function(ur) {
-        if (!ur.ok) throw new Error('保存失敗');
+    return ghGetFile('hospitals.csv').then(function(d) {
+        return ghPutFile('hospitals.csv', generateHospitalsCSV(), d ? d.sha : null);
+    }).then(function(r) {
+        if (!r.ok) throw new Error('保存失敗');
         syncBadge('synced','同期完了');
         return true;
     }).catch(function(e) {
@@ -745,36 +1026,68 @@ function saveToGitHub() {
     });
 }
 
+function saveStaffToGitHub() {
+    if (!cfg) return Promise.resolve(false);
+    return ghGetFile('staff.csv').then(function(d) {
+        return ghPutFile('staff.csv', generateStaffCSV(), d ? d.sha : null);
+    }).then(function(r) {
+        if (!r.ok) throw new Error('保存失敗');
+        return true;
+    }).catch(function(e) {
+        toast('スタッフ保存失敗: ' + e.message, 'error');
+        return false;
+    });
+}
+
+function saveTargetsToGitHub() {
+    if (!cfg) return Promise.resolve(false);
+    return ghGetFile('targets.csv').then(function(d) {
+        return ghPutFile('targets.csv', generateTargetsCSV(), d ? d.sha : null);
+    }).then(function(r) {
+        if (!r.ok) throw new Error('保存失敗');
+        return true;
+    }).catch(function(e) {
+        toast('ターゲット保存失敗: ' + e.message, 'error');
+        return false;
+    });
+}
+
+function saveJobTypesToGitHub() {
+    if (!cfg) return Promise.resolve(false);
+    return ghGetFile('jobtypes.csv').then(function(d) {
+        return ghPutFile('jobtypes.csv', generateJobTypesCSV(), d ? d.sha : null);
+    }).then(function(r) {
+        if (!r.ok) throw new Error('保存失敗');
+        return true;
+    }).catch(function(e) {
+        toast('職種保存失敗: ' + e.message, 'error');
+        return false;
+    });
+}
+
+function saveSchedulesToGitHub() {
+    if (!cfg) return Promise.resolve(false);
+    return ghGetFile('schedules.csv').then(function(d) {
+        return ghPutFile('schedules.csv', generateSchedulesCSV(), d ? d.sha : null);
+    }).then(function(r) {
+        if (!r.ok) throw new Error('保存失敗');
+        return true;
+    }).catch(function(e) {
+        toast('スケジュール保存失敗: ' + e.message, 'error');
+        return false;
+    });
+}
+
 function refreshFromGitHub() {
     if (!cfg) { toast('GitHub設定を完了してください','error'); return; }
     dataLoaded = false;
-    loadFromGitHub();
+    loadAllFromGitHub();
     toast('最新データを取得しています...');
 }
 
 /* ═══════════════════════════════════════
-   CSV PARSE / GENERATE
+   CSV HELPERS
    ═══════════════════════════════════════ */
-var JP_MAP = {
-    '病院名':'Name','住所':'Address','都道府県':'Prefecture','市町村':'City',
-    '代表電話番号':'Phone','所属ドクター':'Doctors','所属看護師':'Nurses',
-    '所属臨床工学技士':'Engineers','その他':'Other','メモ':'Memo',
-    '透析外来':'HasOutpatient','ターゲット':'IsTarget'
-};
-
-function parseCSV(text) {
-    var lines = text.split('\n').filter(function(l) { return l.trim(); });
-    if (!lines.length) return;
-    var headers = csvLine(lines[0]);
-    hospitals = [];
-    for (var i = 1; i < lines.length; i++) {
-        var vals = csvLine(lines[i]);
-        var h = {};
-        headers.forEach(function(hd, j) { h[JP_MAP[hd] || hd] = vals[j] || ''; });
-        hospitals.push(h);
-    }
-}
-
 function csvLine(line) {
     var r = [], c = '', q = false;
     for (var i = 0; i < line.length; i++) {
@@ -795,34 +1108,250 @@ function csvEsc(v) {
     return (s.indexOf(',') >= 0 || s.indexOf('"') >= 0 || s.indexOf('\n') >= 0) ? '"' + s.replace(/"/g,'""') + '"' : s;
 }
 
-function generateCSV() {
-    var o = 'Name,Address,Prefecture,City,Phone,Doctors,Nurses,Engineers,Other,Memo,HasOutpatient,IsTarget\n';
+/* ═══════════════════════════════════════
+   HOSPITALS CSV
+   ═══════════════════════════════════════ */
+function parseHospitalsCSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    if (!lines.length) return;
+    var headers = csvLine(lines[0]);
+    hospitals = [];
+
+    // Detect old format columns for migration
+    var colMap = {};
+    headers.forEach(function(h, i) { colMap[h] = i; });
+
+    // Map old Japanese headers
+    var JP_MAP = {
+        '病院名':'Name','住所':'Address','都道府県':'Prefecture','市町村':'City',
+        '代表電話番号':'Phone','その他':'Other','メモ':'Memo','ターゲット':'Targets'
+    };
+
+    for (var i = 1; i < lines.length; i++) {
+        var vals = csvLine(lines[i]);
+        var h = {};
+
+        // Try mapped headers first
+        headers.forEach(function(hd, j) {
+            var key = JP_MAP[hd] || hd;
+            h[key] = vals[j] || '';
+        });
+
+        // Migration: if old IsTarget field exists and was 'Yes', and no Targets field
+        if (h.IsTarget === 'Yes' && !h.Targets) {
+            h.Targets = 'ターゲット';
+        }
+
+        // Clean up old fields
+        delete h.Doctors;
+        delete h.Nurses;
+        delete h.Engineers;
+        delete h.HasOutpatient;
+        delete h.IsTarget;
+
+        hospitals.push(h);
+    }
+}
+
+function generateHospitalsCSV() {
+    var o = 'Name,Address,Prefecture,City,Phone,Other,Memo,Targets\n';
     hospitals.forEach(function(h) {
-        o += [h.Name,h.Address,h.Prefecture,h.City,h.Phone,h.Doctors,h.Nurses,h.Engineers,h.Other,h.Memo,h.HasOutpatient,h.IsTarget].map(function(v) { return csvEsc(v||''); }).join(',') + '\n';
+        o += [h.Name,h.Address,h.Prefecture,h.City,h.Phone,h.Other,h.Memo,h.Targets].map(function(v) { return csvEsc(v||''); }).join(',') + '\n';
     });
     return o;
 }
 
 /* ═══════════════════════════════════════
-   DASHBOARD (Stats Grid)
+   STAFF CSV
+   ═══════════════════════════════════════ */
+function parseStaffCSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    if (!lines.length) return;
+    var headers = csvLine(lines[0]);
+    staffMembers = [];
+    for (var i = 1; i < lines.length; i++) {
+        var vals = csvLine(lines[i]);
+        var s = {};
+        headers.forEach(function(hd, j) { s[hd] = vals[j] || ''; });
+        staffMembers.push(s);
+    }
+}
+
+function generateStaffCSV() {
+    var o = 'ID,Name,HospitalName,JobType,Phone,Email,Memo\n';
+    staffMembers.forEach(function(s) {
+        o += [s.ID,s.Name,s.HospitalName,s.JobType,s.Phone,s.Email,s.Memo].map(function(v) { return csvEsc(v||''); }).join(',') + '\n';
+    });
+    return o;
+}
+
+/* ═══════════════════════════════════════
+   TARGETS CSV
+   ═══════════════════════════════════════ */
+function parseTargetsCSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    targets = [];
+    for (var i = 0; i < lines.length; i++) {
+        var name = lines[i].trim();
+        if (name && name !== 'Name') targets.push(name);
+    }
+}
+
+function generateTargetsCSV() {
+    var o = 'Name\n';
+    targets.forEach(function(t) { o += csvEsc(t) + '\n'; });
+    return o;
+}
+
+/* ═══════════════════════════════════════
+   JOBTYPES CSV
+   ═══════════════════════════════════════ */
+function parseJobTypesCSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    jobTypes = [];
+    for (var i = 0; i < lines.length; i++) {
+        var name = lines[i].trim();
+        if (name && name !== 'Name') jobTypes.push(name);
+    }
+    if (jobTypes.length === 0) {
+        jobTypes = ['ドクター', '看護師', '臨床工学技士'];
+    }
+}
+
+function generateJobTypesCSV() {
+    var o = 'Name\n';
+    jobTypes.forEach(function(j) { o += csvEsc(j) + '\n'; });
+    return o;
+}
+
+/* ═══════════════════════════════════════
+   SCHEDULES CSV
+   ═══════════════════════════════════════ */
+function parseSchedulesCSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    if (!lines.length) return;
+    var headers = csvLine(lines[0]);
+    schedules = [];
+    for (var i = 1; i < lines.length; i++) {
+        var vals = csvLine(lines[i]);
+        var s = {};
+        headers.forEach(function(hd, j) { s[hd] = vals[j] || ''; });
+        schedules.push(s);
+    }
+}
+
+function generateSchedulesCSV() {
+    var o = 'HospitalName,DayOfWeek,Period,Slot,StaffName\n';
+    schedules.forEach(function(s) {
+        o += [s.HospitalName,s.DayOfWeek,s.Period,s.Slot,s.StaffName].map(function(v) { return csvEsc(v||''); }).join(',') + '\n';
+    });
+    return o;
+}
+
+/* ═══════════════════════════════════════
+   TARGETS MANAGEMENT (Settings)
+   ═══════════════════════════════════════ */
+function renderTargetTags() {
+    var wrap = document.getElementById('targetTagList');
+    if (!wrap) return;
+    if (!targets.length) { wrap.innerHTML = '<span class="help">ターゲットが未登録です</span>'; return; }
+    var html = '';
+    targets.forEach(function(t, i) {
+        html += '<span class="tag-item">' + esc(t) + '<button class="tag-del" onclick="removeTarget(' + i + ')">&times;</button></span>';
+    });
+    wrap.innerHTML = html;
+}
+
+function addTarget() {
+    var inp = document.getElementById('newTargetName');
+    var name = inp.value.trim();
+    if (!name) { toast('ターゲット名を入力してください','error'); return; }
+    if (targets.indexOf(name) >= 0) { toast('同じ名前のターゲットが存在します','error'); return; }
+    targets.push(name);
+    inp.value = '';
+    renderTargetTags();
+    if (cfg) saveTargetsToGitHub();
+    toast('ターゲット「' + name + '」を追加しました');
+}
+
+function removeTarget(i) {
+    var name = targets[i];
+    targets.splice(i, 1);
+    renderTargetTags();
+    if (cfg) saveTargetsToGitHub();
+    toast('ターゲット「' + name + '」を削除しました');
+}
+
+/* ═══════════════════════════════════════
+   JOBTYPES MANAGEMENT (Settings)
+   ═══════════════════════════════════════ */
+function renderJobTypeTags() {
+    var wrap = document.getElementById('jobTypeTagList');
+    if (!wrap) return;
+    if (!jobTypes.length) { wrap.innerHTML = '<span class="help">職種が未登録です</span>'; return; }
+    var html = '';
+    jobTypes.forEach(function(j, i) {
+        html += '<span class="tag-item">' + esc(j) + '<button class="tag-del" onclick="removeJobType(' + i + ')">&times;</button></span>';
+    });
+    wrap.innerHTML = html;
+}
+
+function addJobType() {
+    var inp = document.getElementById('newJobTypeName');
+    var name = inp.value.trim();
+    if (!name) { toast('職種名を入力してください','error'); return; }
+    if (jobTypes.indexOf(name) >= 0) { toast('同じ名前の職種が存在します','error'); return; }
+    jobTypes.push(name);
+    inp.value = '';
+    renderJobTypeTags();
+    if (cfg) saveJobTypesToGitHub();
+    toast('職種「' + name + '」を追加しました');
+}
+
+function removeJobType(i) {
+    var name = jobTypes[i];
+    jobTypes.splice(i, 1);
+    renderJobTypeTags();
+    if (cfg) saveJobTypesToGitHub();
+    toast('職種「' + name + '」を削除しました');
+}
+
+/* ═══════════════════════════════════════
+   DASHBOARD
    ═══════════════════════════════════════ */
 function renderDash() {
     var total = hospitals.length;
     var prefSet = {};
     hospitals.forEach(function(h) { if (h.Prefecture) prefSet[h.Prefecture] = true; });
     var prefCount = Object.keys(prefSet).length;
-    var outCnt = hospitals.filter(function(h) { return h.HasOutpatient === 'Yes'; }).length;
-    var tgtCnt = hospitals.filter(function(h) { return h.IsTarget === 'Yes'; }).length;
 
-    document.getElementById('dashGrid').innerHTML =
-        '<div class="dash-card c-all ' + (currentView==='all'?'selected':'') + '" onclick="setView(\'all\')">' +
-            '<div class="dash-icon">🏥</div><div class="dash-num">' + total + '</div><div class="dash-label">全施設</div></div>' +
-        '<div class="dash-card c-pref ' + (currentView==='pref'?'selected':'') + '" onclick="setView(\'pref\')">' +
-            '<div class="dash-icon">📍</div><div class="dash-num">' + prefCount + '</div><div class="dash-label">都道府県別</div></div>' +
-        '<div class="dash-card c-out ' + (currentView==='out'?'selected':'') + '" onclick="setView(\'out\')">' +
-            '<div class="dash-icon">💉</div><div class="dash-num">' + outCnt + '</div><div class="dash-label">透析外来あり</div></div>' +
-        '<div class="dash-card c-target ' + (currentView==='target'?'selected':'') + '" onclick="setView(\'target\')">' +
-            '<div class="dash-icon">🎯</div><div class="dash-num">' + tgtCnt + '</div><div class="dash-label">ターゲット</div></div>';
+    var html = '';
+    html += '<div class="dash-card c-all ' + (currentView==='all'?'selected':'') + '" onclick="setView(\'all\')">' +
+        '<div class="dash-icon">&#x1F3E5;</div><div class="dash-num">' + total + '</div><div class="dash-label">全施設</div></div>';
+    html += '<div class="dash-card c-pref ' + (currentView==='pref'?'selected':'') + '" onclick="setView(\'pref\')">' +
+        '<div class="dash-icon">&#x1F4CD;</div><div class="dash-num">' + prefCount + '</div><div class="dash-label">都道府県別</div></div>';
+
+    // Dynamic target cards
+    targets.forEach(function(t) {
+        var cnt = 0;
+        hospitals.forEach(function(h) {
+            var tList = (h.Targets || '').split(';').map(function(x){return x.trim();}).filter(Boolean);
+            if (tList.indexOf(t) >= 0) cnt++;
+        });
+        var viewKey = 'target_' + t;
+        html += '<div class="dash-card c-target ' + (currentView===viewKey?'selected':'') + '" onclick="setView(\'' + esc(viewKey).replace(/'/g,"\\'") + '\')">' +
+            '<div class="dash-icon">&#x1F3AF;</div><div class="dash-num">' + cnt + '</div><div class="dash-label">' + esc(t) + '</div></div>';
+    });
+
+    // Schedule search card
+    var schedHospCount = 0;
+    var schedHospSet = {};
+    schedules.forEach(function(s) { if (s.StaffName) schedHospSet[s.HospitalName] = true; });
+    schedHospCount = Object.keys(schedHospSet).length;
+    html += '<div class="dash-card c-schedule ' + (currentView==='schedule'?'selected':'') + '" onclick="setView(\'schedule\')">' +
+        '<div class="dash-icon">&#x1F4C5;</div><div class="dash-num">' + schedHospCount + '</div><div class="dash-label">外来予定</div></div>';
+
+    document.getElementById('dashGrid').innerHTML = html;
 }
 
 function setView(v) {
@@ -838,26 +1367,30 @@ function renderSubView() {
     var wrap = document.getElementById('listSubView');
 
     if (!currentView) {
-        wrap.innerHTML = '<div class="empty"><div class="empty-icon">👆</div><div class="empty-text">上のカードをタップして<br>施設一覧を表示してください</div></div>';
+        wrap.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F446;</div><div class="empty-text">上のカードをタップして<br>施設一覧を表示してください</div></div>';
         return;
     }
 
     var html = '';
     if (currentView === 'all')    html = renderAllView();
-    if (currentView === 'pref')   html = renderPrefView();
-    if (currentView === 'out')    html = renderFilterView('HasOutpatient', '透析外来あり');
-    if (currentView === 'target') html = renderFilterView('IsTarget', 'ターゲット施設');
+    else if (currentView === 'pref')   html = renderPrefView();
+    else if (currentView === 'schedule') html = renderScheduleSearchView();
+    else if (currentView.indexOf('target_') === 0) html = renderTargetFilterView(currentView.substring(7));
     wrap.innerHTML = html;
 
     var si = document.getElementById('subSearch');
     if (si) {
         si.addEventListener('input', function(e) { onSubSearch(e.target.value); });
     }
+    // Bind schedule filter events
+    if (currentView === 'schedule') {
+        bindScheduleFilters();
+    }
 }
 
 /* ── All ── */
 function renderAllView() {
-    var refreshBtn = cfg ? '<div class="refresh-bar"><button class="btn-refresh" onclick="refreshFromGitHub()">🔄 GitHubから更新</button></div>' : '';
+    var refreshBtn = cfg ? '<div class="refresh-bar"><button class="btn-refresh" onclick="refreshFromGitHub()">&#x1F504; GitHubから更新</button></div>' : '';
     var html = '<div class="view-header"><div class="view-title">全施設一覧</div><div class="view-count">' + hospitals.length + '件</div></div>' +
         refreshBtn +
         '<div class="search-wrap"><input type="text" class="search-input" id="subSearch" placeholder="施設名・住所で検索..."></div>' +
@@ -883,8 +1416,8 @@ function renderPrefView() {
         var safePref = esc(pref);
         html += '<div class="pref-group">' +
             '<div class="pref-header ' + (isOpen?'open':'') + '" onclick="togglePref(this, \'' + safePref.replace(/'/g, "\\'") + '\')">' +
-                '<span>📍 ' + safePref + '</span>' +
-                '<span><span class="pref-count">' + list.length + '</span><span class="pref-arrow">▼</span></span>' +
+                '<span>&#x1F4CD; ' + safePref + '</span>' +
+                '<span><span class="pref-count">' + list.length + '</span><span class="pref-arrow">&#x25BC;</span></span>' +
             '</div>' +
             '<div class="pref-items ' + (isOpen?'open':'') + '">';
         list.forEach(function(item) {
@@ -896,19 +1429,20 @@ function renderPrefView() {
     return html;
 }
 
-/* ── Filtered (outpatient / target) ── */
-function renderFilterView(key, label) {
+/* ── Target filtered ── */
+function renderTargetFilterView(targetName) {
     var filtered = [];
     hospitals.forEach(function(h, i) {
-        if (h[key] === 'Yes') filtered.push({ h: h, idx: i });
+        var tList = (h.Targets || '').split(';').map(function(x){return x.trim();}).filter(Boolean);
+        if (tList.indexOf(targetName) >= 0) filtered.push({ h: h, idx: i });
     });
 
-    var html = '<div class="view-header"><div class="view-title">' + esc(label) + '</div><div class="view-count">' + filtered.length + '件</div></div>' +
+    var html = '<div class="view-header"><div class="view-title">' + esc(targetName) + '</div><div class="view-count">' + filtered.length + '件</div></div>' +
         '<div class="search-wrap"><input type="text" class="search-input" id="subSearch" placeholder="施設名で検索..."></div>' +
         '<div id="subList">';
 
     if (!filtered.length) {
-        html += '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">該当する施設がありません</div></div>';
+        html += '<div class="empty"><div class="empty-icon">&#x1F4ED;</div><div class="empty-text">該当する施設がありません</div></div>';
     } else {
         filtered.forEach(function(item) {
             html += cardStandalone(item.h, item.idx);
@@ -918,9 +1452,171 @@ function renderFilterView(key, label) {
     return html;
 }
 
+/* ── Schedule search ── */
+function renderScheduleSearchView() {
+    // Get unique prefectures/cities from hospitals that have schedules
+    var hospWithSched = {};
+    schedules.forEach(function(s) { if (s.StaffName) hospWithSched[s.HospitalName] = true; });
+
+    var prefSet = {};
+    var citySet = {};
+    hospitals.forEach(function(h) {
+        if (hospWithSched[h.Name]) {
+            if (h.Prefecture) prefSet[h.Prefecture] = true;
+            if (h.City) citySet[h.Prefecture + '||' + h.City] = true;
+        }
+    });
+
+    var prefs = Object.keys(prefSet).sort();
+    var days = ['月','火','水','木','金','土','日'];
+
+    var html = '<div class="view-header"><div class="view-title">外来予定検索</div></div>';
+
+    html += '<div class="form-card">';
+    html += '<label class="fl">都道府県</label>';
+    html += '<div class="filter-grid" id="schedPrefFilter">';
+    prefs.forEach(function(p) {
+        html += '<label class="filter-chk"><input type="checkbox" value="' + esc(p) + '" onchange="onScheduleFilterChange()"> ' + esc(p) + '</label>';
+    });
+    if (!prefs.length) html += '<span class="help">外来スケジュールが登録された施設がありません</span>';
+    html += '</div>';
+
+    html += '<label class="fl">市町村</label>';
+    html += '<div class="filter-grid" id="schedCityFilter"></div>';
+
+    html += '<label class="fl">曜日</label>';
+    html += '<div class="filter-grid" id="schedDayFilter">';
+    days.forEach(function(d) {
+        html += '<label class="filter-chk"><input type="checkbox" value="' + d + '" onchange="onScheduleFilterChange()"> ' + d + '曜</label>';
+    });
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div id="schedResults"></div>';
+    return html;
+}
+
+function bindScheduleFilters() {
+    // Update city filter when prefecture changes
+}
+
+function onScheduleFilterChange() {
+    // Update city checkboxes based on selected prefectures
+    var prefChecks = document.querySelectorAll('#schedPrefFilter input:checked');
+    var selectedPrefs = [];
+    prefChecks.forEach(function(c) { selectedPrefs.push(c.value); });
+
+    // Get all cities for selected prefectures from hospitals with schedules
+    var hospWithSched = {};
+    schedules.forEach(function(s) { if (s.StaffName) hospWithSched[s.HospitalName] = true; });
+
+    var cityMap = {};
+    hospitals.forEach(function(h) {
+        if (hospWithSched[h.Name] && selectedPrefs.indexOf(h.Prefecture) >= 0) {
+            if (h.City) cityMap[h.City] = true;
+        }
+    });
+
+    var cityWrap = document.getElementById('schedCityFilter');
+    var cities = Object.keys(cityMap).sort();
+    if (selectedPrefs.length === 0) {
+        cityWrap.innerHTML = '<span class="help">都道府県を選択してください</span>';
+    } else if (!cities.length) {
+        cityWrap.innerHTML = '<span class="help">該当なし</span>';
+    } else {
+        var chtml = '';
+        cities.forEach(function(c) {
+            chtml += '<label class="filter-chk"><input type="checkbox" value="' + esc(c) + '" onchange="onScheduleFilterChange()"> ' + esc(c) + '</label>';
+        });
+        cityWrap.innerHTML = chtml;
+    }
+
+    // Update filter-chk checked styling
+    document.querySelectorAll('.filter-chk input').forEach(function(inp) {
+        if (inp.checked) inp.parentElement.classList.add('checked');
+        else inp.parentElement.classList.remove('checked');
+    });
+
+    // Show results
+    renderScheduleResults();
+}
+
+function renderScheduleResults() {
+    var wrap = document.getElementById('schedResults');
+    if (!wrap) return;
+
+    var prefChecks = document.querySelectorAll('#schedPrefFilter input:checked');
+    var cityChecks = document.querySelectorAll('#schedCityFilter input:checked');
+    var dayChecks = document.querySelectorAll('#schedDayFilter input:checked');
+
+    var selectedPrefs = []; prefChecks.forEach(function(c) { selectedPrefs.push(c.value); });
+    var selectedCities = []; cityChecks.forEach(function(c) { selectedCities.push(c.value); });
+    var selectedDays = []; dayChecks.forEach(function(c) { selectedDays.push(c.value); });
+
+    if (!selectedPrefs.length && !selectedDays.length) {
+        wrap.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F50D;</div><div class="empty-text">条件を選択してください</div></div>';
+        return;
+    }
+
+    // Find matching schedules
+    var results = [];
+    var hospMap = {};
+    hospitals.forEach(function(h) { hospMap[h.Name] = h; });
+
+    schedules.forEach(function(s) {
+        if (!s.StaffName) return;
+        var h = hospMap[s.HospitalName];
+        if (!h) return;
+
+        var prefMatch = selectedPrefs.length === 0 || selectedPrefs.indexOf(h.Prefecture) >= 0;
+        var cityMatch = selectedCities.length === 0 || selectedCities.indexOf(h.City) >= 0;
+        var dayMatch = selectedDays.length === 0 || selectedDays.indexOf(s.DayOfWeek) >= 0;
+
+        if (prefMatch && cityMatch && dayMatch) {
+            results.push({
+                hospital: s.HospitalName,
+                prefecture: h.Prefecture,
+                city: h.City,
+                day: s.DayOfWeek,
+                period: s.Period,
+                slot: s.Slot,
+                staff: s.StaffName
+            });
+        }
+    });
+
+    if (!results.length) {
+        wrap.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F4ED;</div><div class="empty-text">該当する外来予定がありません</div></div>';
+        return;
+    }
+
+    // Group by hospital
+    var grouped = {};
+    results.forEach(function(r) {
+        if (!grouped[r.hospital]) grouped[r.hospital] = { info: r, entries: [] };
+        grouped[r.hospital].entries.push(r);
+    });
+
+    var html = '<div class="view-header"><div class="view-title">検索結果</div><div class="view-count">' + Object.keys(grouped).length + '施設</div></div>';
+
+    Object.keys(grouped).forEach(function(hname) {
+        var g = grouped[hname];
+        html += '<div class="form-card" style="margin-bottom:10px;">';
+        html += '<div style="font-weight:800;font-size:15px;margin-bottom:4px;">&#x1F3E5; ' + esc(hname) + '</div>';
+        html += '<div style="font-size:12px;color:var(--text-sub);margin-bottom:8px;">&#x1F4CD; ' + esc(g.info.prefecture) + ' ' + esc(g.info.city) + '</div>';
+
+        g.entries.forEach(function(e) {
+            html += '<div class="staff-mini-card"><span class="s-name">' + esc(e.staff) + '</span><span class="s-type">' + esc(e.day) + '曜 ' + (e.period==='AM'?'午前':'午後') + '</span></div>';
+        });
+        html += '</div>';
+    });
+
+    wrap.innerHTML = html;
+}
+
 /* ── Card renderers ── */
 function renderCardList(list) {
-    if (!list.length) return '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">施設が登録されていません<br>「新規追加」タブから登録してください</div></div>';
+    if (!list.length) return '<div class="empty"><div class="empty-icon">&#x1F4ED;</div><div class="empty-text">施設が登録されていません<br>「新規追加」タブから登録してください</div></div>';
     var html = '';
     list.forEach(function(h, i) {
         html += cardStandalone(h, i);
@@ -936,7 +1632,7 @@ function cardStandalone(h, idx) {
             '<div class="h-sub">' + esc(h.Prefecture||'') + ' ' + esc(h.City||'') + (h.Phone ? ' ・ ' + esc(h.Phone) : '') + '</div>' +
         '</div>' +
         badges +
-        '<span class="h-chevron">›</span></div>';
+        '<span class="h-chevron">&#x203A;</span></div>';
 }
 
 function cardInGroup(h, idx) {
@@ -947,17 +1643,18 @@ function cardInGroup(h, idx) {
             '<div class="h-sub">' + esc(h.City||'') + (h.Phone ? ' ・ ' + esc(h.Phone) : '') + '</div>' +
         '</div>' +
         badges +
-        '<span class="h-chevron">›</span></div>';
+        '<span class="h-chevron">&#x203A;</span></div>';
 }
 
 function badgesHTML(h) {
     var b = '';
-    if (h.IsTarget === 'Yes') b += '<span class="h-badge h-badge-target">🎯</span>';
-    if (h.HasOutpatient === 'Yes') b += '<span class="h-badge h-badge-out">💉</span>';
+    var tList = (h.Targets || '').split(';').map(function(x){return x.trim();}).filter(Boolean);
+    tList.forEach(function(t) {
+        b += '<span class="h-badge h-badge-target">&#x1F3AF; ' + esc(t) + '</span>';
+    });
     return b ? '<div class="h-badges">' + b + '</div>' : '';
 }
 
-/* ── Prefecture toggle ── */
 function togglePref(el, pref) {
     el.classList.toggle('open');
     var items = el.nextElementSibling;
@@ -965,24 +1662,25 @@ function togglePref(el, pref) {
     openPrefs[pref] = items.classList.contains('open');
 }
 
-/* ── Search within sub-view ── */
 function onSubSearch(kw) {
     var listEl = document.getElementById('subList');
     if (!listEl) return;
 
     var source = [];
-    if (currentView === 'out') {
-        hospitals.forEach(function(h,i) { if (h.HasOutpatient==='Yes') source.push({h:h, idx:i}); });
-    } else if (currentView === 'target') {
-        hospitals.forEach(function(h,i) { if (h.IsTarget==='Yes') source.push({h:h, idx:i}); });
-    } else {
+    if (currentView === 'all') {
         hospitals.forEach(function(h,i) { source.push({h:h, idx:i}); });
+    } else if (currentView.indexOf('target_') === 0) {
+        var tName = currentView.substring(7);
+        hospitals.forEach(function(h,i) {
+            var tList = (h.Targets || '').split(';').map(function(x){return x.trim();}).filter(Boolean);
+            if (tList.indexOf(tName) >= 0) source.push({h:h, idx:i});
+        });
     }
 
     if (!kw) {
         var html = '';
         if (!source.length) {
-            html = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">該当なし</div></div>';
+            html = '<div class="empty"><div class="empty-icon">&#x1F4ED;</div><div class="empty-text">該当なし</div></div>';
         } else {
             source.forEach(function(item) { html += cardStandalone(item.h, item.idx); });
         }
@@ -1001,12 +1699,12 @@ function onSubSearch(kw) {
         filtered.forEach(function(item) { fhtml += cardStandalone(item.h, item.idx); });
         listEl.innerHTML = fhtml;
     } else {
-        listEl.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">該当する施設がありません</div></div>';
+        listEl.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F50D;</div><div class="empty-text">該当する施設がありません</div></div>';
     }
 }
 
 /* ═══════════════════════════════════════
-   DETAIL MODAL
+   HOSPITAL DETAIL MODAL
    ═══════════════════════════════════════ */
 function showDetail(idx) {
     currentIdx = idx;
@@ -1014,19 +1712,19 @@ function showDetail(idx) {
     if (!h) return;
 
     var rows = [
-        ['📍 所在地', (h.Prefecture||'') + ' ' + (h.City||'')],
+        ['&#x1F4CD; 所在地', (h.Prefecture||'') + ' ' + (h.City||'')],
         ['住所（詳細）', h.Address],
-        ['📞 電話', h.Phone],
-        ['👨‍⚕️ ドクター', h.Doctors],
-        ['👩‍⚕️ 看護師', h.Nurses],
-        ['🔧 臨床工学技士', h.Engineers],
+        ['&#x1F4DE; 電話', h.Phone],
         ['その他', h.Other],
-        ['📝 メモ', h.Memo]
+        ['&#x1F4DD; メモ', h.Memo]
     ];
 
+    // Target badges
+    var tList = (h.Targets || '').split(';').map(function(x){return x.trim();}).filter(Boolean);
     var badges = '';
-    if (h.IsTarget === 'Yes') badges += '<span class="h-badge h-badge-target" style="font-size:12px;padding:4px 12px;">🎯 ターゲット</span>';
-    if (h.HasOutpatient === 'Yes') badges += '<span class="h-badge h-badge-out" style="font-size:12px;padding:4px 12px;">💉 透析外来</span>';
+    tList.forEach(function(t) {
+        badges += '<span class="h-badge h-badge-target" style="font-size:12px;padding:4px 12px;">&#x1F3AF; ' + esc(t) + '</span>';
+    });
 
     var html = '<div style="font-size:20px;font-weight:800;margin-bottom:6px;">' + esc(h.Name||'') + '</div>';
     if (badges) html += '<div class="detail-badges">' + badges + '</div>';
@@ -1034,12 +1732,23 @@ function showDetail(idx) {
     rows.forEach(function(row) {
         var lbl = row[0], val = row[1];
         if (!val) return;
-        if (lbl === '📞 電話') {
+        if (lbl === '&#x1F4DE; 電話') {
             html += '<div class="detail-row"><div class="detail-lbl">' + lbl + '</div><div class="detail-val"><a href="tel:' + esc(val) + '">' + esc(val) + '</a></div></div>';
         } else {
             html += '<div class="detail-row"><div class="detail-lbl">' + lbl + '</div><div class="detail-val">' + esc(val) + '</div></div>';
         }
     });
+
+    // Linked staff
+    var linkedStaff = staffMembers.filter(function(s) { return s.HospitalName === h.Name; });
+    if (linkedStaff.length) {
+        html += '<div class="staff-section"><h3>&#x1F464; 所属医療従事者（' + linkedStaff.length + '名）</h3>';
+        linkedStaff.forEach(function(s) {
+            html += '<div class="staff-mini-card"><span class="s-name">' + esc(s.Name) + '</span><span class="s-type">' + esc(s.JobType) + '</span></div>';
+        });
+        html += '<div style="margin-top:12px;"><button class="btn btn-outline btn-sm" onclick="openScheduleEditor(' + idx + ')">&#x1F4C5; 外来スケジュールを管理</button></div>';
+        html += '</div>';
+    }
 
     document.getElementById('detailBody').innerHTML = html;
     document.getElementById('detailModal').classList.add('show');
@@ -1048,7 +1757,7 @@ function showDetail(idx) {
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
 /* ═══════════════════════════════════════
-   EDIT MODAL
+   HOSPITAL EDIT MODAL
    ═══════════════════════════════════════ */
 function openEditFromDetail() {
     closeModal('detailModal');
@@ -1066,9 +1775,6 @@ function openEdit(idx) {
         ['市町村 *','ed-city','text', h.City],
         ['住所（詳細）','ed-addr','text', h.Address],
         ['代表電話番号','ed-phone','tel', h.Phone],
-        ['所属ドクター','ed-doc','text', h.Doctors],
-        ['所属看護師','ed-nurse','text', h.Nurses],
-        ['所属臨床工学技士','ed-eng','text', h.Engineers],
         ['その他','ed-other','text', h.Other]
     ];
 
@@ -1077,12 +1783,22 @@ function openEdit(idx) {
         html += '<div class="fg"><label class="fl">' + f[0] + '</label><input type="' + f[2] + '" class="fi" id="' + f[1] + '" value="' + esc(f[3]||'') + '"></div>';
     });
     html += '<div class="fg"><label class="fl">メモ</label><textarea class="fi" id="ed-memo">' + esc(h.Memo||'') + '</textarea></div>';
-    html += '<div class="fg">' +
-        '<div class="chk-row"><input type="checkbox" id="ed-out" ' + (h.HasOutpatient==='Yes'?'checked':'') + '><label for="ed-out">透析外来あり</label></div>' +
-        '<div class="chk-row"><input type="checkbox" id="ed-tgt" ' + (h.IsTarget==='Yes'?'checked':'') + '><label for="ed-tgt">営業ターゲット施設</label></div>' +
-    '</div>';
-    html += '<button class="btn btn-success" onclick="saveEdit()">💾 保存する</button>';
-    html += '<button class="btn btn-danger" onclick="deleteFromEdit()">🗑️ この施設を削除</button>';
+
+    // Target checkboxes
+    var currentTargets = (h.Targets || '').split(';').map(function(x){return x.trim();}).filter(Boolean);
+    html += '<div class="fg"><label class="fl">ターゲット分類</label>';
+    if (targets.length) {
+        targets.forEach(function(t) {
+            var checked = currentTargets.indexOf(t) >= 0 ? 'checked' : '';
+            html += '<div class="chk-row"><input type="checkbox" class="ed-target-chk" value="' + esc(t) + '" ' + checked + '><label>' + esc(t) + '</label></div>';
+        });
+    } else {
+        html += '<div class="help">設定タブでターゲットを追加してください</div>';
+    }
+    html += '</div>';
+
+    html += '<button class="btn btn-success" onclick="saveEdit()">&#x1F4BE; 保存する</button>';
+    html += '<button class="btn btn-danger" onclick="deleteFromEdit()">&#x1F5D1;&#xFE0F; この施設を削除</button>';
 
     document.getElementById('editFormWrap').innerHTML = html;
     document.getElementById('editModal').classList.add('show');
@@ -1090,35 +1806,34 @@ function openEdit(idx) {
 
 function saveEdit() {
     if (currentIdx < 0) return;
+    var selectedTargets = [];
+    document.querySelectorAll('.ed-target-chk:checked').forEach(function(c) { selectedTargets.push(c.value); });
+
     hospitals[currentIdx] = {
-        Name:           document.getElementById('ed-name').value,
-        Prefecture:     document.getElementById('ed-pref').value,
-        City:           document.getElementById('ed-city').value,
-        Address:        document.getElementById('ed-addr').value,
-        Phone:          document.getElementById('ed-phone').value,
-        Doctors:        document.getElementById('ed-doc').value,
-        Nurses:         document.getElementById('ed-nurse').value,
-        Engineers:      document.getElementById('ed-eng').value,
-        Other:          document.getElementById('ed-other').value,
-        Memo:           document.getElementById('ed-memo').value,
-        HasOutpatient:  document.getElementById('ed-out').checked ? 'Yes' : '',
-        IsTarget:       document.getElementById('ed-tgt').checked ? 'Yes' : ''
+        Name:       document.getElementById('ed-name').value,
+        Prefecture: document.getElementById('ed-pref').value,
+        City:       document.getElementById('ed-city').value,
+        Address:    document.getElementById('ed-addr').value,
+        Phone:      document.getElementById('ed-phone').value,
+        Other:      document.getElementById('ed-other').value,
+        Memo:       document.getElementById('ed-memo').value,
+        Targets:    selectedTargets.join(';')
     };
     closeModal('editModal');
-    if (cfg) saveToGitHub();
+    if (cfg) saveHospitalsToGitHub();
     renderDash();
     renderSubView();
     toast('施設情報を更新しました');
 }
 
 /* ═══════════════════════════════════════
-   DELETE
+   DELETE HOSPITAL
    ═══════════════════════════════════════ */
 function deleteFromDetail() {
     if (!confirm('この施設を削除してもよろしいですか？')) return;
     hospitals.splice(currentIdx, 1);
     closeModal('detailModal');
-    if (cfg) saveToGitHub();
+    if (cfg) saveHospitalsToGitHub();
     renderDash();
     renderSubView();
     toast('施設を削除しました');
@@ -1128,7 +1843,7 @@ function deleteFromEdit() {
     if (!confirm('この施設を削除してもよろしいですか？')) return;
     hospitals.splice(currentIdx, 1);
     closeModal('editModal');
-    if (cfg) saveToGitHub();
+    if (cfg) saveHospitalsToGitHub();
     renderDash();
     renderSubView();
     toast('施設を削除しました');
@@ -1143,28 +1858,25 @@ function addHospital() {
     var city = document.getElementById('inp-city').value.trim();
     if (!name || !pref || !city) { toast('施設名・都道府県・市町村は必須です','error'); return; }
 
+    var selectedTargets = [];
+    document.querySelectorAll('#inp-targets-wrap input:checked').forEach(function(c) { selectedTargets.push(c.value); });
+
     hospitals.push({
-        Name:           name,
-        Prefecture:     pref,
-        City:           city,
-        Address:        document.getElementById('inp-addr').value,
-        Phone:          document.getElementById('inp-phone').value,
-        Doctors:        document.getElementById('inp-doc').value,
-        Nurses:         document.getElementById('inp-nurse').value,
-        Engineers:      document.getElementById('inp-eng').value,
-        Other:          document.getElementById('inp-other').value,
-        Memo:           document.getElementById('inp-memo').value,
-        HasOutpatient:  document.getElementById('inp-outpatient').checked ? 'Yes' : '',
-        IsTarget:       document.getElementById('inp-target').checked ? 'Yes' : ''
+        Name:       name,
+        Prefecture: pref,
+        City:       city,
+        Address:    document.getElementById('inp-addr').value,
+        Phone:      document.getElementById('inp-phone').value,
+        Other:      document.getElementById('inp-other').value,
+        Memo:       document.getElementById('inp-memo').value,
+        Targets:    selectedTargets.join(';')
     });
 
-    if (cfg) saveToGitHub();
+    if (cfg) saveHospitalsToGitHub();
 
-    // フォームリセット
-    var ids = ['inp-name','inp-pref','inp-city','inp-addr','inp-phone','inp-doc','inp-nurse','inp-eng','inp-other','inp-memo'];
+    var ids = ['inp-name','inp-pref','inp-city','inp-addr','inp-phone','inp-other','inp-memo'];
     ids.forEach(function(id) { document.getElementById(id).value = ''; });
-    document.getElementById('inp-outpatient').checked = false;
-    document.getElementById('inp-target').checked = false;
+    document.querySelectorAll('#inp-targets-wrap input').forEach(function(c) { c.checked = false; });
 
     renderDash();
     renderSubView();
@@ -1172,15 +1884,344 @@ function addHospital() {
 }
 
 /* ═══════════════════════════════════════
+   ADD FORM SELECTS REFRESH
+   ═══════════════════════════════════════ */
+function refreshAddFormSelects() {
+    // Hospital select for staff add
+    var hSel = document.getElementById('inp-shospital');
+    if (hSel) {
+        var val = hSel.value;
+        hSel.innerHTML = '<option value="">-- 選択してください --</option>';
+        hospitals.forEach(function(h) {
+            hSel.innerHTML += '<option value="' + esc(h.Name) + '">' + esc(h.Name) + '</option>';
+        });
+        if (val) hSel.value = val;
+    }
+
+    // JobType select
+    var jSel = document.getElementById('inp-sjobtype');
+    if (jSel) {
+        var jval = jSel.value;
+        jSel.innerHTML = '<option value="">-- 選択してください --</option>';
+        jobTypes.forEach(function(j) {
+            jSel.innerHTML += '<option value="' + esc(j) + '">' + esc(j) + '</option>';
+        });
+        if (jval) jSel.value = jval;
+    }
+
+    // Target checkboxes for hospital add
+    var tWrap = document.getElementById('inp-targets-wrap');
+    if (tWrap) {
+        if (targets.length) {
+            var thtml = '';
+            targets.forEach(function(t) {
+                thtml += '<div class="chk-row"><input type="checkbox" value="' + esc(t) + '"><label>' + esc(t) + '</label></div>';
+            });
+            tWrap.innerHTML = thtml;
+        } else {
+            tWrap.innerHTML = '<span class="help">設定タブでターゲットを追加してください</span>';
+        }
+    }
+}
+
+/* ═══════════════════════════════════════
+   STAFF LIST
+   ═══════════════════════════════════════ */
+function renderStaffList(keyword) {
+    var wrap = document.getElementById('staffList');
+    var countEl = document.getElementById('staffCount');
+    if (!wrap) return;
+
+    var kw = keyword || '';
+    var filtered = staffMembers;
+    if (kw) {
+        filtered = staffMembers.filter(function(s) {
+            return (s.Name||'').indexOf(kw)>=0 || (s.HospitalName||'').indexOf(kw)>=0 || (s.JobType||'').indexOf(kw)>=0;
+        });
+    }
+
+    countEl.textContent = filtered.length + '件';
+
+    if (!filtered.length) {
+        wrap.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F464;</div><div class="empty-text">' + (kw ? '該当する医療従事者がありません' : '医療従事者が登録されていません<br>「新規追加」タブから登録してください') + '</div></div>';
+        return;
+    }
+
+    var html = '';
+    filtered.forEach(function(s, i) {
+        var realIdx = staffMembers.indexOf(s);
+        html += '<div class="h-card-standalone" onclick="showStaffDetail(' + realIdx + ')">' +
+            '<div class="h-info">' +
+                '<div class="h-name">' + esc(s.Name || '（氏名なし）') + '</div>' +
+                '<div class="h-sub">' + esc(s.HospitalName||'') + ' ・ ' + esc(s.JobType||'') + '</div>' +
+            '</div>' +
+            '<span class="h-chevron">&#x203A;</span></div>';
+    });
+    wrap.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════
+   STAFF DETAIL
+   ═══════════════════════════════════════ */
+function showStaffDetail(idx) {
+    currentStaffIdx = idx;
+    var s = staffMembers[idx];
+    if (!s) return;
+
+    var rows = [
+        ['&#x1F3E5; 所属施設', s.HospitalName],
+        ['&#x1F4BC; 職種', s.JobType],
+        ['&#x1F4DE; 電話', s.Phone],
+        ['&#x1F4E7; メール', s.Email],
+        ['&#x1F4DD; メモ', s.Memo]
+    ];
+
+    var html = '<div style="font-size:20px;font-weight:800;margin-bottom:10px;">' + esc(s.Name||'') + '</div>';
+    rows.forEach(function(row) {
+        var lbl = row[0], val = row[1];
+        if (!val) return;
+        if (lbl === '&#x1F4DE; 電話') {
+            html += '<div class="detail-row"><div class="detail-lbl">' + lbl + '</div><div class="detail-val"><a href="tel:' + esc(val) + '">' + esc(val) + '</a></div></div>';
+        } else if (lbl === '&#x1F4E7; メール') {
+            html += '<div class="detail-row"><div class="detail-lbl">' + lbl + '</div><div class="detail-val"><a href="mailto:' + esc(val) + '">' + esc(val) + '</a></div></div>';
+        } else {
+            html += '<div class="detail-row"><div class="detail-lbl">' + lbl + '</div><div class="detail-val">' + esc(val) + '</div></div>';
+        }
+    });
+
+    document.getElementById('staffDetailBody').innerHTML = html;
+    document.getElementById('staffDetailModal').classList.add('show');
+}
+
+/* ═══════════════════════════════════════
+   STAFF EDIT
+   ═══════════════════════════════════════ */
+function openStaffEditFromDetail() {
+    closeModal('staffDetailModal');
+    openStaffEdit(currentStaffIdx);
+}
+
+function openStaffEdit(idx) {
+    currentStaffIdx = idx;
+    var s = staffMembers[idx];
+    if (!s) return;
+
+    var html = '<div class="fg"><label class="fl">氏名 *</label><input type="text" class="fi" id="sed-name" value="' + esc(s.Name||'') + '"></div>';
+    html += '<div class="fg"><label class="fl">所属施設 *</label><select class="fi" id="sed-hospital"><option value="">-- 選択 --</option>';
+    hospitals.forEach(function(h) {
+        html += '<option value="' + esc(h.Name) + '"' + (h.Name===s.HospitalName?' selected':'') + '>' + esc(h.Name) + '</option>';
+    });
+    html += '</select></div>';
+
+    html += '<div class="fg"><label class="fl">職種 *</label><select class="fi" id="sed-jobtype"><option value="">-- 選択 --</option>';
+    jobTypes.forEach(function(j) {
+        html += '<option value="' + esc(j) + '"' + (j===s.JobType?' selected':'') + '>' + esc(j) + '</option>';
+    });
+    html += '</select></div>';
+
+    html += '<div class="fg"><label class="fl">電話番号</label><input type="tel" class="fi" id="sed-phone" value="' + esc(s.Phone||'') + '"></div>';
+    html += '<div class="fg"><label class="fl">メールアドレス</label><input type="email" class="fi" id="sed-email" value="' + esc(s.Email||'') + '"></div>';
+    html += '<div class="fg"><label class="fl">メモ</label><textarea class="fi" id="sed-memo">' + esc(s.Memo||'') + '</textarea></div>';
+    html += '<button class="btn btn-success" onclick="saveStaffEdit()">&#x1F4BE; 保存する</button>';
+    html += '<button class="btn btn-danger" onclick="deleteStaffFromEdit()">&#x1F5D1;&#xFE0F; 削除</button>';
+
+    document.getElementById('staffEditFormWrap').innerHTML = html;
+    document.getElementById('staffEditModal').classList.add('show');
+}
+
+function saveStaffEdit() {
+    if (currentStaffIdx < 0) return;
+    var name = document.getElementById('sed-name').value.trim();
+    var hosp = document.getElementById('sed-hospital').value;
+    var jtype = document.getElementById('sed-jobtype').value;
+    if (!name || !hosp || !jtype) { toast('氏名・所属施設・職種は必須です','error'); return; }
+
+    var oldName = staffMembers[currentStaffIdx].Name;
+    var oldHosp = staffMembers[currentStaffIdx].HospitalName;
+
+    staffMembers[currentStaffIdx] = {
+        ID:           staffMembers[currentStaffIdx].ID,
+        Name:         name,
+        HospitalName: hosp,
+        JobType:      jtype,
+        Phone:        document.getElementById('sed-phone').value,
+        Email:        document.getElementById('sed-email').value,
+        Memo:         document.getElementById('sed-memo').value
+    };
+
+    // Update schedules if name changed
+    if (oldName !== name) {
+        schedules.forEach(function(sc) {
+            if (sc.StaffName === oldName && sc.HospitalName === oldHosp) {
+                sc.StaffName = name;
+            }
+        });
+        if (cfg) saveSchedulesToGitHub();
+    }
+
+    closeModal('staffEditModal');
+    if (cfg) saveStaffToGitHub();
+    renderStaffList();
+    toast('医療従事者情報を更新しました');
+}
+
+/* ═══════════════════════════════════════
+   DELETE STAFF
+   ═══════════════════════════════════════ */
+function deleteStaffFromDetail() {
+    if (!confirm('この医療従事者を削除してもよろしいですか？')) return;
+    staffMembers.splice(currentStaffIdx, 1);
+    closeModal('staffDetailModal');
+    if (cfg) saveStaffToGitHub();
+    renderStaffList();
+    toast('医療従事者を削除しました');
+}
+
+function deleteStaffFromEdit() {
+    if (!confirm('この医療従事者を削除してもよろしいですか？')) return;
+    staffMembers.splice(currentStaffIdx, 1);
+    closeModal('staffEditModal');
+    if (cfg) saveStaffToGitHub();
+    renderStaffList();
+    toast('医療従事者を削除しました');
+}
+
+/* ═══════════════════════════════════════
+   ADD STAFF
+   ═══════════════════════════════════════ */
+function addStaff() {
+    var name = document.getElementById('inp-sname').value.trim();
+    var hosp = document.getElementById('inp-shospital').value;
+    var jtype = document.getElementById('inp-sjobtype').value;
+    if (!name || !hosp || !jtype) { toast('氏名・所属施設・職種は必須です','error'); return; }
+
+    staffMembers.push({
+        ID:           genId(),
+        Name:         name,
+        HospitalName: hosp,
+        JobType:      jtype,
+        Phone:        document.getElementById('inp-sphone').value,
+        Email:        document.getElementById('inp-semail').value,
+        Memo:         document.getElementById('inp-smemo').value
+    });
+
+    if (cfg) saveStaffToGitHub();
+
+    var ids = ['inp-sname','inp-sphone','inp-semail','inp-smemo'];
+    ids.forEach(function(id) { document.getElementById(id).value = ''; });
+    document.getElementById('inp-shospital').value = '';
+    document.getElementById('inp-sjobtype').value = '';
+
+    renderStaffList();
+    toast('医療従事者を登録しました');
+}
+
+/* ═══════════════════════════════════════
+   SCHEDULE EDITOR MODAL
+   ═══════════════════════════════════════ */
+function openScheduleEditor(hospIdx) {
+    closeModal('detailModal');
+    var h = hospitals[hospIdx];
+    if (!h) return;
+
+    var linkedStaff = staffMembers.filter(function(s) { return s.HospitalName === h.Name; });
+    var days = ['月','火','水','木','金','土','日'];
+    var periods = ['AM','PM'];
+    var slots = ['1','2','3'];
+
+    // Build schedule map for quick lookup
+    var schedMap = {};
+    schedules.forEach(function(s) {
+        if (s.HospitalName === h.Name) {
+            schedMap[s.DayOfWeek + '_' + s.Period + '_' + s.Slot] = s.StaffName;
+        }
+    });
+
+    var html = '<div style="font-size:16px;font-weight:800;margin-bottom:12px;">&#x1F3E5; ' + esc(h.Name) + '</div>';
+    html += '<div style="overflow-x:auto;">';
+    html += '<table class="sched-table">';
+
+    // Header row
+    html += '<tr><th style="width:80px;"></th>';
+    days.forEach(function(d) {
+        html += '<th class="sched-day-header" colspan="1">' + d + '曜</th>';
+    });
+    html += '</tr>';
+
+    // For each period/slot combo
+    periods.forEach(function(p) {
+        for (var si = 0; si < slots.length; si++) {
+            html += '<tr>';
+            if (si === 0) {
+                html += '<th rowspan="3" style="background:' + (p==='AM'?'#e8f4fd':'#fef3e6') + ';">' + (p==='AM'?'午前':'午後') + '</th>';
+            }
+            days.forEach(function(d) {
+                var key = d + '_' + p + '_' + slots[si];
+                var curVal = schedMap[key] || '';
+                html += '<td><select class="sched-sel" data-day="' + d + '" data-period="' + p + '" data-slot="' + slots[si] + '">';
+                html += '<option value="">-</option>';
+                linkedStaff.forEach(function(s) {
+                    html += '<option value="' + esc(s.Name) + '"' + (s.Name===curVal?' selected':'') + '>' + esc(s.Name) + '</option>';
+                });
+                html += '</select></td>';
+            });
+            html += '</tr>';
+        }
+    });
+
+    html += '</table></div>';
+    html += '<button class="btn btn-success" style="margin-top:14px;" onclick="saveSchedule(\'' + esc(h.Name).replace(/'/g,"\\'") + '\')">&#x1F4BE; スケジュールを保存</button>';
+
+    document.getElementById('scheduleBody').innerHTML = html;
+    document.getElementById('scheduleModal').classList.add('show');
+}
+
+function saveSchedule(hospName) {
+    // Remove existing schedules for this hospital
+    schedules = schedules.filter(function(s) { return s.HospitalName !== hospName; });
+
+    // Add new schedules from the form
+    document.querySelectorAll('.sched-sel').forEach(function(sel) {
+        var val = sel.value;
+        if (val) {
+            schedules.push({
+                HospitalName: hospName,
+                DayOfWeek: sel.getAttribute('data-day'),
+                Period: sel.getAttribute('data-period'),
+                Slot: sel.getAttribute('data-slot'),
+                StaffName: val
+            });
+        }
+    });
+
+    if (cfg) saveSchedulesToGitHub();
+    closeModal('scheduleModal');
+    renderDash();
+    toast('外来スケジュールを保存しました');
+}
+
+/* ═══════════════════════════════════════
    INIT
    ═══════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
     loadCfg();
+
+    // Staff search
+    document.getElementById('staffSearch').addEventListener('input', function(e) {
+        renderStaffList(e.target.value);
+    });
+
     if (cfg) {
-        loadFromGitHub();
+        loadAllFromGitHub();
     } else {
+        // Load defaults
+        if (jobTypes.length === 0) {
+            jobTypes = ['ドクター', '看護師', '臨床工学技士'];
+        }
         renderDash();
         renderSubView();
+        renderTargetTags();
+        renderJobTypeTags();
     }
 });
 </script>

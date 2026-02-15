@@ -1,3 +1,2 @@
-Name,Address,Prefecture,City,Phone,Doctors,Nurses,Engineers,Other,Memo,HasOutpatient,IsTarget
-サンプル総合病院,東京都千代田区丸の内1-1-1,東京都,千代田区,03-1234-5678,田中医師・佐藤医師,山田看護師・鈴木看護師,高橋技士,,,訪問予定: 2026年3月,
-黒島テスト病院,,香川県,高松市,,佐藤先生,,山田技士長,,テスト,Yes,Yes
+Name,Address,Prefecture,City,Phone,Other,Memo,Targets
+サンプル総合病院,東京都千代田区丸の内1-1-1,東京都,千代田区,03-1234-5678,,訪問予定: 2026年3月,
