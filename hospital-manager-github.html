@@ -453,9 +453,9 @@
     </div>
 
     <div class="tab-bar">
-        <button class="tab active" onclick="switchTab('setup')">⚙️ 設定</button>
-        <button class="tab" onclick="switchTab('list')">📋 病院一覧</button>
-        <button class="tab" onclick="switchTab('add')">➕ 新規追加</button>
+        <button class="tab active" onclick="switchTab('setup', this)">⚙️ 設定</button>
+        <button class="tab" onclick="switchTab('list', this)">📋 病院一覧</button>
+        <button class="tab" onclick="switchTab('add', this)">➕ 新規追加</button>
     </div>
 
     <div id="notification" class="notification"></div>
@@ -654,6 +654,11 @@
         let currentEditIndex = -1;
         let currentFilter = null;
 
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadGitHubConfig();
             
@@ -672,15 +677,20 @@
             });
         });
 
-        function switchTab(tabName) {
+        function switchTab(tabName, el) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            el.classList.add('active');
             
             document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
             document.getElementById('tab-' + tabName).style.display = 'block';
             
-            if (tabName === 'list' && githubConfig) {
-                loadFromGitHub();
+            if (tabName === 'list') {
+                if (githubConfig) {
+                    loadFromGitHub();
+                } else {
+                    renderStats();
+                    renderHospitalList();
+                }
             }
         }
 
@@ -828,8 +838,8 @@
                 
                 if (updateResponse.ok) {
                     updateSyncStatus('synced', '同期完了');
-                    showNotification('GitHubに保存しました', 'success');
-                    await loadFromGitHub();
+                    renderStats();
+                    renderHospitalList();
                 } else {
                     const errorData = await updateResponse.json();
                     console.error('GitHub API Error:', errorData);
@@ -847,13 +857,30 @@
             if (lines.length === 0) return;
             
             const headers = parseCSVLine(lines[0]);
+
+            // 日本語ヘッダーから英語キーへのマッピング
+            const keyMap = {
+                '病院名': 'Name',
+                '住所': 'Address',
+                '都道府県': 'Prefecture',
+                '市町村': 'City',
+                '代表電話番号': 'Phone',
+                '所属ドクター': 'Doctors',
+                '所属看護師': 'Nurses',
+                '所属臨床工学技士': 'Engineers',
+                'その他': 'Other',
+                'メモ': 'Memo',
+                '透析外来': 'HasOutpatient',
+                'ターゲット': 'IsTarget'
+            };
             
             hospitals = [];
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
                 const hospital = {};
                 headers.forEach((header, index) => {
-                    hospital[header] = values[index] || '';
+                    const normalizedKey = keyMap[header] || header;
+                    hospital[normalizedKey] = values[index] || '';
                 });
                 hospitals.push(hospital);
             }
@@ -898,18 +925,18 @@
             let csv = 'Name,Address,Prefecture,City,Phone,Doctors,Nurses,Engineers,Other,Memo,HasOutpatient,IsTarget\n';
             hospitals.forEach(h => {
                 const row = [
-                    h.Name || h['病院名'] || '',
-                    h.Address || h['住所'] || '',
-                    h.Prefecture || h['都道府県'] || '',
-                    h.City || h['市町村'] || '',
-                    h.Phone || h['代表電話番号'] || '',
-                    h.Doctors || h['所属ドクター'] || '',
-                    h.Nurses || h['所属看護師'] || '',
-                    h.Engineers || h['所属臨床工学技士'] || '',
-                    h.Other || h['その他'] || '',
-                    h.Memo || h['メモ'] || '',
-                    h.HasOutpatient || h['透析外来'] || '',
-                    h.IsTarget || h['ターゲット'] || ''
+                    h.Name || '',
+                    h.Address || '',
+                    h.Prefecture || '',
+                    h.City || '',
+                    h.Phone || '',
+                    h.Doctors || '',
+                    h.Nurses || '',
+                    h.Engineers || '',
+                    h.Other || '',
+                    h.Memo || '',
+                    h.HasOutpatient || '',
+                    h.IsTarget || ''
                 ].map(escapeCSVValue);
                 csv += row.join(',') + '\n';
             });
@@ -933,7 +960,14 @@
             };
             
             hospitals.push(newHospital);
-            await saveToGitHub();
+            
+            if (githubConfig) {
+                await saveToGitHub();
+            } else {
+                renderStats();
+                renderHospitalList();
+            }
+            
             document.getElementById('addHospitalForm').reset();
             showNotification('病院を登録しました', 'success');
         }
@@ -941,18 +975,18 @@
         function showHospitalDetail(index) {
             currentEditIndex = index;
             const h = hospitals[index];
-            const name = h.Name || h['病院名'] || '';
-            const prefecture = h.Prefecture || h['都道府県'] || '';
-            const city = h.City || h['市町村'] || '';
-            const address = h.Address || h['住所'] || '';
-            const phone = h.Phone || h['代表電話番号'] || '';
-            const doctors = h.Doctors || h['所属ドクター'] || '';
-            const nurses = h.Nurses || h['所属看護師'] || '';
-            const engineers = h.Engineers || h['所属臨床工学技士'] || '';
-            const other = h.Other || h['その他'] || '';
-            const memo = h.Memo || h['メモ'] || '';
-            const hasOutpatient = h.HasOutpatient || h['透析外来'] || '';
-            const isTarget = h.IsTarget || h['ターゲット'] || '';
+            const name = escapeHTML(h.Name || '');
+            const prefecture = escapeHTML(h.Prefecture || '');
+            const city = escapeHTML(h.City || '');
+            const address = escapeHTML(h.Address || '');
+            const phone = escapeHTML(h.Phone || '');
+            const doctors = escapeHTML(h.Doctors || '');
+            const nurses = escapeHTML(h.Nurses || '');
+            const engineers = escapeHTML(h.Engineers || '');
+            const other = escapeHTML(h.Other || '');
+            const memo = escapeHTML(h.Memo || '');
+            const hasOutpatient = h.HasOutpatient || '';
+            const isTarget = h.IsTarget || '';
 
             let badges = '';
             if (isTarget === 'Yes') badges += '<span class="badge badge-target">🎯 ターゲット施設</span>';
@@ -1017,18 +1051,18 @@
             currentEditIndex = index;
             const h = hospitals[index];
 
-            document.getElementById('edit-name').value = h.Name || h['病院名'] || '';
-            document.getElementById('edit-prefecture').value = h.Prefecture || h['都道府県'] || '';
-            document.getElementById('edit-city').value = h.City || h['市町村'] || '';
-            document.getElementById('edit-address').value = h.Address || h['住所'] || '';
-            document.getElementById('edit-phone').value = h.Phone || h['代表電話番号'] || '';
-            document.getElementById('edit-doctors').value = h.Doctors || h['所属ドクター'] || '';
-            document.getElementById('edit-nurses').value = h.Nurses || h['所属看護師'] || '';
-            document.getElementById('edit-engineers').value = h.Engineers || h['所属臨床工学技士'] || '';
-            document.getElementById('edit-other').value = h.Other || h['その他'] || '';
-            document.getElementById('edit-memo').value = h.Memo || h['メモ'] || '';
-            document.getElementById('edit-outpatient').checked = (h.HasOutpatient || h['透析外来']) === 'Yes';
-            document.getElementById('edit-target').checked = (h.IsTarget || h['ターゲット']) === 'Yes';
+            document.getElementById('edit-name').value = h.Name || '';
+            document.getElementById('edit-prefecture').value = h.Prefecture || '';
+            document.getElementById('edit-city').value = h.City || '';
+            document.getElementById('edit-address').value = h.Address || '';
+            document.getElementById('edit-phone').value = h.Phone || '';
+            document.getElementById('edit-doctors').value = h.Doctors || '';
+            document.getElementById('edit-nurses').value = h.Nurses || '';
+            document.getElementById('edit-engineers').value = h.Engineers || '';
+            document.getElementById('edit-other').value = h.Other || '';
+            document.getElementById('edit-memo').value = h.Memo || '';
+            document.getElementById('edit-outpatient').checked = h.HasOutpatient === 'Yes';
+            document.getElementById('edit-target').checked = h.IsTarget === 'Yes';
 
             document.getElementById('editModal').classList.add('show');
         }
@@ -1055,35 +1089,56 @@
                 IsTarget: document.getElementById('edit-target').checked ? 'Yes' : ''
             };
 
-            await saveToGitHub();
             closeEditModal();
+            
+            if (githubConfig) {
+                await saveToGitHub();
+            } else {
+                renderStats();
+                renderHospitalList();
+            }
+            
             showNotification('病院情報を更新しました', 'success');
         }
 
         async function deleteHospitalFromDetail() {
-            if (!confirm('この病院を削除してもよろしいですか？\n\n削除後はGitHubに自動同期されます。')) return;
+            if (!confirm('この病院を削除してもよろしいですか？')) return;
             
             hospitals.splice(currentEditIndex, 1);
             closeDetailModal();
-            await saveToGitHub();
+            
+            if (githubConfig) {
+                await saveToGitHub();
+            } else {
+                renderStats();
+                renderHospitalList();
+            }
+            
             showNotification('病院を削除しました', 'success');
         }
 
         async function deleteHospitalFromEdit() {
-            if (!confirm('この病院を削除してもよろしいですか？\n\n削除後はGitHubに自動同期されます。')) return;
+            if (!confirm('この病院を削除してもよろしいですか？')) return;
             
             hospitals.splice(currentEditIndex, 1);
             closeEditModal();
-            await saveToGitHub();
+            
+            if (githubConfig) {
+                await saveToGitHub();
+            } else {
+                renderStats();
+                renderHospitalList();
+            }
+            
             showNotification('病院を削除しました', 'success');
         }
 
         function renderStats() {
             const statsEl = document.getElementById('stats');
             const totalHospitals = hospitals.length;
-            const prefectures = new Set(hospitals.map(h => h.Prefecture || h['都道府県']).filter(p => p));
-            const outpatientCount = hospitals.filter(h => (h.HasOutpatient || h['透析外来']) === 'Yes').length;
-            const targetCount = hospitals.filter(h => (h.IsTarget || h['ターゲット']) === 'Yes').length;
+            const prefectures = new Set(hospitals.map(h => h.Prefecture || '').filter(p => p));
+            const outpatientCount = hospitals.filter(h => h.HasOutpatient === 'Yes').length;
+            const targetCount = hospitals.filter(h => h.IsTarget === 'Yes').length;
             
             statsEl.innerHTML = `
                 <div class="stat-card" onclick="filterByAll()">
@@ -1112,14 +1167,14 @@
 
         function filterByOutpatient() {
             currentFilter = 'outpatient';
-            const filtered = hospitals.filter(h => (h.HasOutpatient || h['透析外来']) === 'Yes');
+            const filtered = hospitals.filter(h => h.HasOutpatient === 'Yes');
             renderHospitalList(filtered);
             showNotification(`透析外来のある施設: ${filtered.length}件`, 'success');
         }
 
         function filterByTarget() {
             currentFilter = 'target';
-            const filtered = hospitals.filter(h => (h.IsTarget || h['ターゲット']) === 'Yes');
+            const filtered = hospitals.filter(h => h.IsTarget === 'Yes');
             renderHospitalList(filtered);
             showNotification(`ターゲット施設: ${filtered.length}件`, 'success');
         }
@@ -1127,7 +1182,7 @@
         function showPrefectureList() {
             const prefMap = {};
             hospitals.forEach(h => {
-                const pref = h.Prefecture || h['都道府県'] || '';
+                const pref = h.Prefecture || '';
                 if (pref) {
                     prefMap[pref] = (prefMap[pref] || 0) + 1;
                 }
@@ -1153,12 +1208,12 @@
             
             list.innerHTML = hospitalsToRender.map((h, i) => {
                 const actualIndex = filteredHospitals ? hospitals.indexOf(h) : i;
-                const name = h.Name || h['病院名'] || '（病院名なし）';
-                const prefecture = h.Prefecture || h['都道府県'] || '';
-                const city = h.City || h['市町村'] || '';
-                const phone = h.Phone || h['代表電話番号'] || '';
-                const hasOutpatient = h.HasOutpatient || h['透析外来'] || '';
-                const isTarget = h.IsTarget || h['ターゲット'] || '';
+                const name = escapeHTML(h.Name || '（病院名なし）');
+                const prefecture = escapeHTML(h.Prefecture || '');
+                const city = escapeHTML(h.City || '');
+                const phone = escapeHTML(h.Phone || '');
+                const hasOutpatient = h.HasOutpatient || '';
+                const isTarget = h.IsTarget || '';
 
                 let badges = '';
                 if (isTarget === 'Yes') badges += '<span class="badge badge-target">🎯</span>';
@@ -1189,10 +1244,10 @@
             }
             
             const filtered = hospitals.filter(h => {
-                const name = h.Name || h['病院名'] || '';
-                const prefecture = h.Prefecture || h['都道府県'] || '';
-                const city = h.City || h['市町村'] || '';
-                const address = h.Address || h['住所'] || '';
+                const name = h.Name || '';
+                const prefecture = h.Prefecture || '';
+                const city = h.City || '';
+                const address = h.Address || '';
                 
                 return name.includes(keyword) ||
                        prefecture.includes(keyword) ||
