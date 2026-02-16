@@ -1,5 +1,4 @@
-﻿Name,Address,Prefecture,City,Phone,Other,Memo,Targets,BedCount,ICUBeds,DialysisBeds,DialysisPatients,DialysisRenewalYear
-サンプル総合病院,東京都千代田区丸の内1-1-1,東京都,千代田区,03-1234-5678,,訪問予定: 2026年3月,,,,,,
+Name,Address,Prefecture,City,Phone,Other,Memo,Targets,BedCount,ICUBeds,DialysisBeds,DialysisPatients,DialysisRenewalYear
 いずみの病院,高知県高知市薊野北町２－１０－５３,高知県,高知市,088-826-5511,,,,,,,,
 うずしお会 岩朝病院,〒772-0017 徳島県鳴門市撫養町立岩元地２８０,徳島県,鳴門市,886858855,,,,,,,,
 さくらの馬場ＣＬ,香川県高松市仏生山町甲４７１－５,香川県,高松市,087-889-3555,,,,,,,,
