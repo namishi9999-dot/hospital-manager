@@ -26,6 +26,15 @@
       img.src='data:image/svg+xml;charset=utf-8,'+svg;
     })();
     </script>
+    <!-- Icon Base64 Loader for Custom Hospital Icon -->
+    <script src="icon-base64-loader.js" defer></script>
+    <script>
+    (async function() {
+      if (!window.IconLoader) return;
+      const base64 = await window.IconLoader.loadBase64FromFile('hospital-icon-base64.txt');
+      if (base64) window.IconLoader.setIcon('hospital', base64);
+    })();
+    </script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         :root{--primary:#1a6fc4;--primary-light:#e8f1fa;--secondary:#4a5a8a;--accent:#e67e22;--accent-light:#fef3e6;--success:#27ae60;--success-light:#eafaf1;--danger:#e74c3c;--danger-light:#fdecea;--bg:#f0f2f5;--card:#fff;--text:#1a1a2e;--text-sub:#6b7280;--border:#e2e5ea;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.08);--radius:14px}
@@ -237,10 +246,14 @@
             <div class="fg"><label class="fl">市町村 *</label><input type="text" class="fi" id="inp-city"></div>
             <div class="fg"><label class="fl">住所（詳細）</label><input type="text" class="fi" id="inp-addr"></div>
             <div class="fg"><label class="fl">代表電話番号</label><input type="tel" class="fi" id="inp-phone"></div>
+            <div class="fg"><label class="fl">一般+療養（病床数）</label><input type="number" class="fi" id="inp-generalbeds" min="0"></div>
             <div class="fg"><label class="fl">病床数</label><input type="number" class="fi" id="inp-bedcount" min="0"></div>
             <div class="fg"><label class="fl">ICU病床数</label><input type="number" class="fi" id="inp-icubeds" min="0"></div>
-            <div class="fg"><label class="fl">透析室病床数</label><input type="number" class="fi" id="inp-dialysisbeds" min="0"></div>
+            <div class="fg"><label class="fl">透析ベッド数</label><input type="number" class="fi" id="inp-dialysisbeds" min="0"></div>
             <div class="fg"><label class="fl">透析患者数</label><input type="number" class="fi" id="inp-dialysispatients" min="0"></div>
+            <div class="fg"><label class="fl">HDF患者数</label><input type="number" class="fi" id="inp-hdfpatients" min="0"></div>
+            <div class="fg"><label class="fl">β2MG吸着患者数</label><input type="number" class="fi" id="inp-betamgpatients" min="0"></div>
+            <div class="fg"><label class="fl">コンソール台数</label><input type="number" class="fi" id="inp-consolecount" min="0"></div>
             <div class="fg"><label class="fl">透析装置更新年度</label><input type="text" class="fi" id="inp-renewalyear" placeholder="例: 2025"></div>
             <div class="fg"><label class="fl">その他</label><input type="text" class="fi" id="inp-other"></div>
             <div class="fg"><label class="fl">メモ</label><textarea class="fi" id="inp-memo"></textarea></div>
@@ -378,8 +391,8 @@ function csvLine(l){var r=[],c='',q=false;for(var i=0;i<l.length;i++){var ch=l[i
 function csvE(v){if(!v)return'';var s=String(v);return(s.indexOf(',')>=0||s.indexOf('"')>=0||s.indexOf('\n')>=0)?'"'+s.replace(/"/g,'""')+'"':s}
 
 /* === HOSPITALS CSV === */
-function parseHospitalsCSV(t){var ls=t.split('\n').filter(function(l){return l.trim()});if(!ls.length)return;var hd=csvLine(ls[0]);hospitals=[];var M={'病院名':'Name','住所':'Address','都道府県':'Prefecture','市町村':'City','代表電話番号':'Phone','その他':'Other','メモ':'Memo','ターゲット':'Targets','病床数':'BedCount','ICU病床数':'ICUBeds','透析室病床数':'DialysisBeds','透析患者数':'DialysisPatients','透析装置更新年度':'DialysisRenewalYear'};for(var i=1;i<ls.length;i++){var vs=csvLine(ls[i]),h={};hd.forEach(function(k,j){h[M[k]||k]=vs[j]||''});if(h.IsTarget==='Yes'&&!h.Targets)h.Targets='ターゲット';delete h.Doctors;delete h.Nurses;delete h.Engineers;delete h.HasOutpatient;delete h.IsTarget;hospitals.push(h)}}
-function genHospCSV(){var o='Name,Address,Prefecture,City,Phone,Other,Memo,Targets,BedCount,ICUBeds,DialysisBeds,DialysisPatients,DialysisRenewalYear\n';hospitals.forEach(function(h){o+=[h.Name,h.Address,h.Prefecture,h.City,h.Phone,h.Other,h.Memo,h.Targets,h.BedCount,h.ICUBeds,h.DialysisBeds,h.DialysisPatients,h.DialysisRenewalYear].map(function(v){return csvE(v||'')}).join(',')+'\n'});return o}
+function parseHospitalsCSV(t){var ls=t.split('\n').filter(function(l){return l.trim()});if(!ls.length)return;var hd=csvLine(ls[0]);hospitals=[];var M={'病院名':'Name','住所':'Address','都道府県':'Prefecture','市町村':'City','代表電話番号':'Phone','その他':'Other','メモ':'Memo','ターゲット':'Targets','病床数':'BedCount','ICU病床数':'ICUBeds','透析室病床数':'DialysisBeds','透析ベッド数':'DialysisBeds','透析患者数':'DialysisPatients','HDF患者数':'HDFPatients','β2MG吸着患者数':'BetaMGPatients','コンソール台数':'ConsoleCount','一般+療養（病床数）':'GeneralBeds','透析装置更新年度':'DialysisRenewalYear'};for(var i=1;i<ls.length;i++){var vs=csvLine(ls[i]),h={};hd.forEach(function(k,j){h[M[k]||k]=vs[j]||''});if(h.IsTarget==='Yes'&&!h.Targets)h.Targets='ターゲット';delete h.Doctors;delete h.Nurses;delete h.Engineers;delete h.HasOutpatient;delete h.IsTarget;hospitals.push(h)}}
+function genHospCSV(){var o='Name,Address,Prefecture,City,Phone,Other,Memo,Targets,BedCount,ICUBeds,DialysisBeds,DialysisPatients,HDFPatients,BetaMGPatients,ConsoleCount,GeneralBeds,DialysisRenewalYear\n';hospitals.forEach(function(h){o+=[h.Name,h.Address,h.Prefecture,h.City,h.Phone,h.Other,h.Memo,h.Targets,h.BedCount,h.ICUBeds,h.DialysisBeds,h.DialysisPatients,h.HDFPatients,h.BetaMGPatients,h.ConsoleCount,h.GeneralBeds,h.DialysisRenewalYear].map(function(v){return csvE(v||'')}).join(',')+'\n'});return o}
 
 /* === STAFF CSV === */
 function parseStaffCSV(t){var ls=t.split('\n').filter(function(l){return l.trim()});if(!ls.length)return;var hd=csvLine(ls[0]);staffMembers=[];for(var i=1;i<ls.length;i++){var vs=csvLine(ls[i]),s={};hd.forEach(function(k,j){s[k]=vs[j]||''});staffMembers.push(s)}}
@@ -616,7 +629,7 @@ function onSubSearch(kw){
 /* === HOSPITAL DETAIL === */
 function showDetail(idx){
     currentIdx=idx;var h=hospitals[idx];if(!h)return;
-    var rows=[['&#x1F4CD; 所在地',(h.Prefecture||'')+' '+(h.City||'')],['住所',h.Address],['&#x1F4DE; 電話',h.Phone],['病床数',h.BedCount],['ICU病床数',h.ICUBeds],['透析室病床数',h.DialysisBeds],['透析患者数',h.DialysisPatients],['透析装置更新年度',h.DialysisRenewalYear],['その他',h.Other],['&#x1F4DD; メモ',h.Memo]];
+    var rows=[['&#x1F4CD; 所在地',(h.Prefecture||'')+' '+(h.City||'')],['住所',h.Address],['&#x1F4DE; 電話',h.Phone],['一般+療養（病床数）',h.GeneralBeds],['病床数',h.BedCount],['ICU病床数',h.ICUBeds],['透析ベッド数',h.DialysisBeds],['透析患者数',h.DialysisPatients],['HDF患者数',h.HDFPatients],['β2MG吸着患者数',h.BetaMGPatients],['コンソール台数',h.ConsoleCount],['透析装置更新年度',h.DialysisRenewalYear],['その他',h.Other],['&#x1F4DD; メモ',h.Memo]];
     var tl=getTargets(h),badges='';tl.forEach(function(t){badges+='<span class="h-badge h-badge-target" style="font-size:12px;padding:4px 12px">&#x1F3AF; '+esc(t)+'</span>'});
     var html='<div style="font-size:20px;font-weight:800;margin-bottom:6px">'+esc(h.Name||'')+'</div>';
     if(badges)html+='<div class="detail-badges">'+badges+'</div>';
@@ -630,7 +643,7 @@ function showDetail(idx){
 function openEditFromDetail(){closeModal('detailModal');openEdit(currentIdx)}
 function openEdit(idx){
     currentIdx=idx;var h=hospitals[idx];if(!h)return;
-    var fields=[['施設名 *','ed-name','text',h.Name],['都道府県 *','ed-pref','text',h.Prefecture],['市町村 *','ed-city','text',h.City],['住所','ed-addr','text',h.Address],['代表電話番号','ed-phone','tel',h.Phone],['病床数','ed-bedcount','number',h.BedCount],['ICU病床数','ed-icubeds','number',h.ICUBeds],['透析室病床数','ed-dialysisbeds','number',h.DialysisBeds],['透析患者数','ed-dialysispatients','number',h.DialysisPatients],['透析装置更新年度','ed-renewalyear','text',h.DialysisRenewalYear],['その他','ed-other','text',h.Other]];
+    var fields=[['施設名 *','ed-name','text',h.Name],['都道府県 *','ed-pref','text',h.Prefecture],['市町村 *','ed-city','text',h.City],['住所','ed-addr','text',h.Address],['代表電話番号','ed-phone','tel',h.Phone],['一般+療養（病床数）','ed-generalbeds','number',h.GeneralBeds],['病床数','ed-bedcount','number',h.BedCount],['ICU病床数','ed-icubeds','number',h.ICUBeds],['透析ベッド数','ed-dialysisbeds','number',h.DialysisBeds],['透析患者数','ed-dialysispatients','number',h.DialysisPatients],['HDF患者数','ed-hdfpatients','number',h.HDFPatients],['β2MG吸着患者数','ed-betamgpatients','number',h.BetaMGPatients],['コンソール台数','ed-consolecount','number',h.ConsoleCount],['透析装置更新年度','ed-renewalyear','text',h.DialysisRenewalYear],['その他','ed-other','text',h.Other]];
     var html='';fields.forEach(function(f){html+='<div class="fg"><label class="fl">'+f[0]+'</label><input type="'+f[2]+'" class="fi" id="'+f[1]+'" value="'+esc(f[3]||'')+'"></div>'});
     html+='<div class="fg"><label class="fl">メモ</label><textarea class="fi" id="ed-memo">'+esc(h.Memo||'')+'</textarea></div>';
     var ct=getTargets(h);html+='<div class="fg"><label class="fl">ターゲット分類</label>';
@@ -641,7 +654,7 @@ function openEdit(idx){
 }
 function saveEdit(){
     if(currentIdx<0)return;var st=[];document.querySelectorAll('.ed-target-chk:checked').forEach(function(c){st.push(c.value)});
-    hospitals[currentIdx]={Name:document.getElementById('ed-name').value,Prefecture:document.getElementById('ed-pref').value,City:document.getElementById('ed-city').value,Address:document.getElementById('ed-addr').value,Phone:document.getElementById('ed-phone').value,BedCount:document.getElementById('ed-bedcount').value,ICUBeds:document.getElementById('ed-icubeds').value,DialysisBeds:document.getElementById('ed-dialysisbeds').value,DialysisPatients:document.getElementById('ed-dialysispatients').value,DialysisRenewalYear:document.getElementById('ed-renewalyear').value,Other:document.getElementById('ed-other').value,Memo:document.getElementById('ed-memo').value,Targets:st.join(';')};
+    hospitals[currentIdx]={Name:document.getElementById('ed-name').value,Prefecture:document.getElementById('ed-pref').value,City:document.getElementById('ed-city').value,Address:document.getElementById('ed-addr').value,Phone:document.getElementById('ed-phone').value,GeneralBeds:document.getElementById('ed-generalbeds').value,BedCount:document.getElementById('ed-bedcount').value,ICUBeds:document.getElementById('ed-icubeds').value,DialysisBeds:document.getElementById('ed-dialysisbeds').value,DialysisPatients:document.getElementById('ed-dialysispatients').value,HDFPatients:document.getElementById('ed-hdfpatients').value,BetaMGPatients:document.getElementById('ed-betamgpatients').value,ConsoleCount:document.getElementById('ed-consolecount').value,DialysisRenewalYear:document.getElementById('ed-renewalyear').value,Other:document.getElementById('ed-other').value,Memo:document.getElementById('ed-memo').value,Targets:st.join(';')};
     closeModal('editModal');if(cfg)saveH();renderDash();renderSubView();toast('施設情報を更新しました');
 }
 function deleteFromDetail(){if(!confirm('この施設を削除してもよろしいですか？'))return;hospitals.splice(currentIdx,1);closeModal('detailModal');if(cfg)saveH();renderDash();renderSubView();toast('施設を削除しました')}
@@ -652,8 +665,8 @@ function addHospital(){
     var n=document.getElementById('inp-name').value.trim(),p=document.getElementById('inp-pref').value.trim(),c=document.getElementById('inp-city').value.trim();
     if(!n||!p||!c){toast('施設名・都道府県・市町村は必須です','error');return}
     var st=[];document.querySelectorAll('#inp-targets-wrap input:checked').forEach(function(c){st.push(c.value)});
-    hospitals.push({Name:n,Prefecture:p,City:c,Address:document.getElementById('inp-addr').value,Phone:document.getElementById('inp-phone').value,BedCount:document.getElementById('inp-bedcount').value,ICUBeds:document.getElementById('inp-icubeds').value,DialysisBeds:document.getElementById('inp-dialysisbeds').value,DialysisPatients:document.getElementById('inp-dialysispatients').value,DialysisRenewalYear:document.getElementById('inp-renewalyear').value,Other:document.getElementById('inp-other').value,Memo:document.getElementById('inp-memo').value,Targets:st.join(';')});
-    if(cfg)saveH();['inp-name','inp-pref','inp-city','inp-addr','inp-phone','inp-bedcount','inp-icubeds','inp-dialysisbeds','inp-dialysispatients','inp-renewalyear','inp-other','inp-memo'].forEach(function(id){document.getElementById(id).value=''});
+    hospitals.push({Name:n,Prefecture:p,City:c,Address:document.getElementById('inp-addr').value,Phone:document.getElementById('inp-phone').value,GeneralBeds:document.getElementById('inp-generalbeds').value,BedCount:document.getElementById('inp-bedcount').value,ICUBeds:document.getElementById('inp-icubeds').value,DialysisBeds:document.getElementById('inp-dialysisbeds').value,DialysisPatients:document.getElementById('inp-dialysispatients').value,HDFPatients:document.getElementById('inp-hdfpatients').value,BetaMGPatients:document.getElementById('inp-betamgpatients').value,ConsoleCount:document.getElementById('inp-consolecount').value,DialysisRenewalYear:document.getElementById('inp-renewalyear').value,Other:document.getElementById('inp-other').value,Memo:document.getElementById('inp-memo').value,Targets:st.join(';')});
+    if(cfg)saveH();['inp-name','inp-pref','inp-city','inp-addr','inp-phone','inp-generalbeds','inp-bedcount','inp-icubeds','inp-dialysisbeds','inp-dialysispatients','inp-hdfpatients','inp-betamgpatients','inp-consolecount','inp-renewalyear','inp-other','inp-memo'].forEach(function(id){document.getElementById(id).value=''});
     document.querySelectorAll('#inp-targets-wrap input').forEach(function(c){c.checked=false});renderDash();renderSubView();toast('施設を登録しました');
 }
 

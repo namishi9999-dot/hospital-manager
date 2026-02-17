@@ -26,6 +26,15 @@
       img.src='data:image/svg+xml;charset=utf-8,'+svg;
     })();
     </script>
+    <!-- Icon Base64 Loader for Custom Converter Icon -->
+    <script src="icon-base64-loader.js" defer></script>
+    <script>
+    (async function() {
+      if (!window.IconLoader) return;
+      const base64 = await window.IconLoader.loadBase64FromFile('converter-icon-base64.txt');
+      if (base64) window.IconLoader.setIcon('converter', base64);
+    })();
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.4.1/papaparse.min.js"></script>
     <style>
@@ -401,30 +410,39 @@ function showFacilityPreview() {
 function convertFacilityExcel() {
     if (!facilityData) return showStatus('facility-preview', 'ファイルを選択してください', 'error');
     try {
-        // 列マッピング: D=病院名(3), G=住所(6), E=都道府県(4), F=市区町村(5), H=電話(7)
+        // 列マッピング（0始まりインデックス）:
+        //  3=施設名, 4=都道府県, 5=市区町村, 6=住所, 7=電話
+        //  9=一般+療養（病床数）
+        //  140=透析患者数, 141=HDF患者数, 142=β2MG吸着患者数
+        //  143=透析ベッド数, 144=コンソール台数
+        const toStr = v => (v === null || v === undefined) ? '' : v.toString();
         const mapped = [];
         for (let i = 1; i < facilityData.length; i++) {
             const row = facilityData[i];
             if (row[3]) {  // 病院名がある場合のみ
                 mapped.push({
-                    Name: (row[3] || '').toString(),
-                    Address: (row[6] || '').toString(),
-                    Prefecture: (row[4] || '').toString(),
-                    City: (row[5] || '').toString(),
-                    Phone: (row[7] || '').toString(),
+                    Name: toStr(row[3]),
+                    Address: toStr(row[6]),
+                    Prefecture: toStr(row[4]),
+                    City: toStr(row[5]),
+                    Phone: toStr(row[7]),
                     Other: '',
                     Memo: '',
                     Targets: '',
                     BedCount: '',
                     ICUBeds: '',
-                    DialysisBeds: '',
-                    DialysisPatients: '',
+                    DialysisBeds: toStr(row[143]),
+                    DialysisPatients: toStr(row[140]),
+                    HDFPatients: toStr(row[141]),
+                    BetaMGPatients: toStr(row[142]),
+                    ConsoleCount: toStr(row[144]),
+                    GeneralBeds: toStr(row[9]),
                     DialysisRenewalYear: ''
                 });
             }
         }
         facilityData = mapped;
-        showStatus('facility-preview', '✅ ' + mapped.length + '件の施設データを変換しました', 'success');
+        showStatus('facility-preview', '✅ ' + mapped.length + '件の施設データを変換しました（透析データ含む）', 'success');
         document.getElementById('btn-facility-download').disabled = false;
     } catch (err) {
         showStatus('facility-preview', '変換に失敗しました: ' + err.message, 'error');
@@ -433,13 +451,15 @@ function convertFacilityExcel() {
 
 function downloadFacilityCSV() {
     if (!facilityData || facilityData.length === 0) return;
-    const headers = 'Name,Address,Prefecture,City,Phone,Other,Memo,Targets,BedCount,ICUBeds,DialysisBeds,DialysisPatients,DialysisRenewalYear';
+    const headers = 'Name,Address,Prefecture,City,Phone,Other,Memo,Targets,BedCount,ICUBeds,DialysisBeds,DialysisPatients,HDFPatients,BetaMGPatients,ConsoleCount,GeneralBeds,DialysisRenewalYear';
     let csv = '\ufeff' + headers + '\n';
     facilityData.forEach(row => {
         const values = [
             row.Name || '', row.Address || '', row.Prefecture || '', row.City || '', row.Phone || '',
             row.Other || '', row.Memo || '', row.Targets || '', row.BedCount || '', row.ICUBeds || '',
-            row.DialysisBeds || '', row.DialysisPatients || '', row.DialysisRenewalYear || ''
+            row.DialysisBeds || '', row.DialysisPatients || '', row.HDFPatients || '',
+            row.BetaMGPatients || '', row.ConsoleCount || '', row.GeneralBeds || '',
+            row.DialysisRenewalYear || ''
         ];
         csv += values.map(v => {
             if ((v + '').includes(',') || (v + '').includes('"')) return '"' + (v + '').replace(/"/g, '""') + '"';

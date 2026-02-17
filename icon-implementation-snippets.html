@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アイコン実装スニペット集</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .badge-hospital {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        .badge-converter {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>アイコン実装スニペット集</h1>
+    
+    <div class="container">
+        <h2>概要</h2>
+        <p>このドキュメントは、Base64エンコードされたアイコン画像をHTMLアプリケーションに統合するための実装スニペット集です。</p>
+        <p>3つの実装方法を提供します：</p>
+        <ul>
+            <li><strong>方法1：</strong> HTMLに直接Base64を組み込み</li>
+            <li><strong>方法2：</strong> 共通スクリプト (icon-base64-loader.js) を使用</li>
+            <li><strong>方法3：</strong> 外部ファイルから動的に読み込み（推奨）</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h2>必要なファイル</h2>
+        <table>
+            <tr>
+                <th>ファイル名</th>
+                <th>説明</th>
+                <th>対象</th>
+            </tr>
+            <tr>
+                <td><code>hospital-icon-base64.txt</code></td>
+                <td>病院アイコン (0011) のBase64データ</td>
+                <td><span class="badge badge-hospital">Hospital</span></td>
+            </tr>
+            <tr>
+                <td><code>converter-icon-base64.txt</code></td>
+                <td>コンバーターアイコン (0022) のBase64データ</td>
+                <td><span class="badge badge-converter">Converter</span></td>
+            </tr>
+            <tr>
+                <td><code>icon-base64-loader.js</code></td>
+                <td>アイコン読み込みユーティリティスクリプト</td>
+                <td>両アプリ</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>方法1: HTMLに直接Base64を組み込み</h2>
+        <h3>病院管理アプリ用 (hospital-manager-github.html)</h3>
+        <p>HTMLの &lt;head&gt; タグ内に以下を追加：</p>
+        <div class="code-block"><pre>&lt;script&gt;
+(function() {
+  const BASE64 = "iVBORw0KGgoAAAANSUhEUgAA..."; // hospital-icon-base64.txt から取得
+
+  function setIcon() {
+    const dataUrl = 'data:image/png;base64,' + BASE64;
+    let link = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'apple-touch-icon';
+      document.head.appendChild(link);
+    }
+    link.href = dataUrl;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setIcon);
+  } else {
+    setIcon();
+  }
+})();
+&lt;/script&gt;</pre></div>
+
+        <h3>データコンバーター用 (data-converter-kintone.html)</h3>
+        <p>HTMLの &lt;head&gt; タグ内に以下を追加：</p>
+        <div class="code-block"><pre>&lt;script&gt;
+(function() {
+  const BASE64 = "iVBORw0KGgoAAAANSUhEUgAA..."; // converter-icon-base64.txt から取得
+
+  function setIcon() {
+    const dataUrl = 'data:image/png;base64,' + BASE64;
+    let link = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'apple-touch-icon';
+      document.head.appendChild(link);
+    }
+    link.href = dataUrl;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setIcon);
+  } else {
+    setIcon();
+  }
+})();
+&lt;/script&gt;</pre></div>
+    </div>
+
+    <div class="container">
+        <h2>方法3: 外部ファイルから読み込み（推奨）</h2>
+        <p>HTMLの &lt;head&gt; タグ内に以下を追加：</p>
+        <div class="code-block"><pre>&lt;script src="icon-base64-loader.js" defer&gt;&lt;/script&gt;
+&lt;script&gt;
+(async function() {
+  if (!window.IconLoader) return;
+  const base64 = await window.IconLoader.loadBase64FromFile('hospital-icon-base64.txt');
+  if (base64) window.IconLoader.setIcon('hospital', base64);
+})();
+&lt;/script&gt;</pre></div>
+    </div>
+
+    <div class="container">
+        <h2>検証方法</h2>
+        <p>F12キーでデベロッパーツールを開き、コンソールで以下を実行：</p>
+        <div class="code-block"><pre>document.querySelector('link[rel="apple-touch-icon"]')
+document.querySelector('link[rel="icon"]')</pre></div>
+        <p>アイコンが表示されていれば成功です。</p>
+    </div>
+
+    <div class="container warning">
+        <h2>注意事項</h2>
+        <p><strong>Base64サイズ：</strong> 約748KB (hospital) / 837KB (converter)</p>
+        <p><strong>キャッシュクリア：</strong> アイコンが更新されない場合は Ctrl+Shift+Delete でキャッシュをクリアしてください</p>
+    </div>
+
+</body>
+</html>
