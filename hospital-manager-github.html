@@ -566,7 +566,7 @@ function renderSchedResults(){
 function renderCards(list){if(!list.length)return'<div class="empty"><div class="empty-icon">&#x1F4ED;</div><div class="empty-text">施設が登録されていません</div></div>';var h='';list.forEach(function(ho,i){h+=cardStandalone(ho,i)});return h}
 function cardStandalone(h,idx){return'<div class="h-card-standalone" onclick="showDetail('+idx+')"><div class="h-info"><div class="h-name">'+esc(h.Name||'')+'</div><div class="h-sub">'+esc(h.Prefecture||'')+' '+esc(h.City||'')+(h.Phone?' ・ '+esc(h.Phone):'')+'</div></div>'+badgesHTML(h)+'<span class="h-chevron">&#x203A;</span></div>'}
 function cardInGroup(h,idx){return'<div class="h-card" onclick="showDetail('+idx+')"><div class="h-info"><div class="h-name">'+esc(h.Name||'')+'</div><div class="h-sub">'+esc(h.City||'')+(h.Phone?' ・ '+esc(h.Phone):'')+'</div></div>'+badgesHTML(h)+'<span class="h-chevron">&#x203A;</span></div>'}
-function badgesHTML(h){var b='';getTargets(h).forEach(function(t){b+='<span class="h-badge h-badge-target">&#x1F3AF; '+esc(t)+'</span>'});return b?'<div class="h-badges">'+b+'</div>':''}
+function badgesHTML(h){return''}
 function togglePref(el,p){el.classList.toggle('open');var it=el.nextElementSibling;it.classList.toggle('open');openPrefs[p]=it.classList.contains('open')}
 function onSubSearch(kw){
     var le=document.getElementById('subList');if(!le)return;
