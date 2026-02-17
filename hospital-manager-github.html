@@ -393,7 +393,6 @@ function renderDash(){
     var html='<div class="dash-card c-all '+(currentView==='all'?'selected':'')+'" onclick="setView(\'all\')"><div class="dash-icon">&#x1F3E5;</div><div class="dash-num">'+total+'</div><div class="dash-label">全施設</div></div>';
     html+='<div class="dash-card c-pref '+(currentView==='pref'?'selected':'')+'" onclick="setView(\'pref\')"><div class="dash-icon">&#x1F4CD;</div><div class="dash-num">'+prefCount+'</div><div class="dash-label">都道府県別</div></div>';
     html+='<div class="dash-card c-tagsearch '+(currentView==='tagsearch'?'selected':'')+'" onclick="currentView=\'tagsearch\'; switchTab(\'dash\');"><div class="dash-icon">&#x1F3F7;</div><div class="dash-label">タグ検索</div></div>';
-    targets.forEach(function(t){var cnt=0;hospitals.forEach(function(h){var tl=getTargets(h);if(tl.indexOf(t)>=0)cnt++});var vk='target_'+t;html+='<div class="dash-card c-target '+(currentView===vk?'selected':'')+'" onclick="setView(\''+esc(vk).replace(/'/g,"\\'")+'\')">'+'<div class="dash-icon">&#x1F3AF;</div><div class="dash-num">'+cnt+'</div><div class="dash-label">'+esc(t)+'</div></div>'});
     var shSet={};schedules.forEach(function(s){if(s.StaffName)shSet[s.HospitalName]=true});
     html+='<div class="dash-card c-schedule '+(currentView==='schedule'?'selected':'')+'" onclick="setView(\'schedule\')"><div class="dash-icon">&#x1F4C5;</div><div class="dash-num">'+Object.keys(shSet).length+'</div><div class="dash-label">外来予定</div></div>';
     document.getElementById('dashGrid').innerHTML=html;
@@ -430,20 +429,23 @@ function renderTagSearchResults(){
     c.parentElement.classList.remove('checked');
   });
 
+  var w=document.getElementById('tagSearchResults');
+  if(!w)return;
+
+  /* タグ未選択のときはプロンプトを表示（施設一覧は表示しない） */
+  if(selTargets.length===0){
+    w.innerHTML='<div class="empty"><div class="empty-icon">&#x2B06;</div><div class="empty-text">上のタグを選択すると<br>該当する施設が表示されます</div></div>';
+    return;
+  }
+
   var filtered=[];
   hospitals.forEach(function(h,i){
-    if(selTargets.length===0){
-      filtered.push({h:h,idx:i});
-      return;
-    }
     var hTargets=getTargets(h);
     if(selTargets.every(function(st){return hTargets.indexOf(st)>=0})){
       filtered.push({h:h,idx:i});
     }
   });
 
-  var w=document.getElementById('tagSearchResults');
-  if(!w)return;
   if(filtered.length===0){
     w.innerHTML='<div class="empty"><div class="empty-icon">&#x1F50D;</div><div class="empty-text">該当する施設がありません</div></div>';
     return;
