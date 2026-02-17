@@ -180,7 +180,7 @@
 <body>
 <div class="header">
     <h1>&#x1F3E5; 病院顧客管理</h1>
-    <div class="header-sub">GitHub連携版 v6.0</div>
+    <div class="header-sub">GitHub連携版 v7.0</div>
     <div class="sync-badge" id="syncStatus">未接続</div>
 </div>
 <div class="tab-bar">
@@ -302,7 +302,14 @@ function closeModal(id){document.getElementById(id).classList.remove('show')}
 /* === TABS === */
 function switchTab(n,el){
     if(n==='dash'){
+        /* タグ検索カードをクリックしたとき: tab-listタブをアクティブにしてからタグ検索ビューを表示 */
+        document.querySelectorAll('.tab-bar .tab-btn').forEach(function(b){b.classList.remove('active')});
+        var listBtn=document.querySelector('.tab-bar .tab-btn[onclick*="list"]');
+        if(listBtn)listBtn.classList.add('active');
+        document.querySelectorAll('.container>.tab-content').forEach(function(c){c.classList.remove('active')});
+        document.getElementById('tab-list').classList.add('active');
         currentView='tagsearch';
+        renderDash();
         renderTagSearchView();
         return;
     }
@@ -398,14 +405,19 @@ function setView(v){currentView=v;renderDash();renderSubView()}
 function renderTagSearchView(){
   var html='<div class="view-header"><div class="view-title">&#x1F3F7; タグ検索</div><div class="view-count">複数タグでAND検索</div></div>';
   html+='<div class="form-card" style="margin-bottom:12px"><label class="fl">タグを選択してください</label>';
-  html+='<div class="tag-search-grid" id="tagSearchFilter">';
-  targets.forEach(function(t){
-    html+='<label class="tag-search-chk"><input type="checkbox" value="'+esc(t)+'" onchange="renderTagSearchResults()"> '+esc(t)+'</label>'
-  });
-  html+='</div></div>';
+  if(targets.length===0){
+    html+='<div class="empty" style="padding:20px 0"><div class="empty-icon">&#x1F3F7;</div><div class="empty-text" style="font-size:13px">タグが登録されていません<br><span style="color:var(--primary)">⚙️ 設定タブ</span>からタグを追加してください</div></div>';
+  }else{
+    html+='<div class="tag-search-grid" id="tagSearchFilter">';
+    targets.forEach(function(t){
+      html+='<label class="tag-search-chk"><input type="checkbox" value="'+esc(t)+'" onchange="renderTagSearchResults()"> '+esc(t)+'</label>'
+    });
+    html+='</div>';
+  }
+  html+='</div>';
   html+='<div id="tagSearchResults"></div>';
   document.getElementById('listSubView').innerHTML=html;
-  renderTagSearchResults();
+  if(targets.length>0)renderTagSearchResults();
 }
 
 function renderTagSearchResults(){
