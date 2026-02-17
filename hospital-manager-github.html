@@ -5,7 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="病院管理">
+    <meta name="application-name" content="病院顧客管理">
+    <meta name="theme-color" content="#1a3a5c">
+    <link id="apple-touch-icon" rel="apple-touch-icon" sizes="180x180">
+    <link id="favicon" rel="icon" type="image/png" sizes="192x192">
     <title>病院顧客管理 - GitHub連携版</title>
+    <script>
+    /* アプリアイコン生成 (SVG→Canvas→PNG→apple-touch-icon) */
+    (function(){
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a3a5c"/><stop offset="100%" stop-color="#1a6fc4"/></linearGradient></defs><rect width="512" height="512" rx="80" fill="url(%23bg)"/><rect x="176" y="100" width="160" height="180" rx="16" fill="%23ffffff" opacity="0.95"/><rect x="216" y="80" width="80" height="40" rx="8" fill="%23e0edff"/><rect x="236" y="155" width="40" height="70" fill="%231a6fc4"/><rect x="211" y="180" width="90" height="20" fill="%231a6fc4"/><circle cx="256" cy="355" r="70" fill="%23ffffff" opacity="0.15"/><circle cx="256" cy="355" r="50" fill="none" stroke="%23ffffff" stroke-width="8"/><text x="256" y="372" text-anchor="middle" fill="%23ffffff" font-size="48" font-family="sans-serif" font-weight="bold">+</text><rect x="100" y="310" width="312" height="120" rx="16" fill="%23ffffff" opacity="0.12"/><text x="256" y="385" text-anchor="middle" fill="%23ffffff" font-size="28" font-family="sans-serif" font-weight="bold" opacity="0">M</text></svg>';
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=512;c.height=512;
+        var ctx=c.getContext('2d');ctx.drawImage(img,0,0);
+        var url=c.toDataURL('image/png');
+        document.getElementById('apple-touch-icon').href=url;
+        document.getElementById('favicon').href=url;
+      };
+      img.src='data:image/svg+xml;charset=utf-8,'+svg;
+    })();
+    </script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         :root{--primary:#1a6fc4;--primary-light:#e8f1fa;--secondary:#4a5a8a;--accent:#e67e22;--accent-light:#fef3e6;--success:#27ae60;--success-light:#eafaf1;--danger:#e74c3c;--danger-light:#fdecea;--bg:#f0f2f5;--card:#fff;--text:#1a1a2e;--text-sub:#6b7280;--border:#e2e5ea;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.08);--radius:14px}
@@ -275,12 +295,14 @@
         <p class="help" style="margin-bottom:12px">データをCSVファイルとしてダウンロードします。</p>
         <button class="btn btn-primary" onclick="exportCSV('hospitals')">&#x1F4E5; 施設データCSV</button>
         <button class="btn btn-primary" onclick="exportCSV('staff')">&#x1F4E5; 医療従事者CSV</button>
+        <button class="btn btn-primary" onclick="exportCSV('appointments')">&#x1F4E5; アポイントCSV</button>
         <div id="exportMailLink" style="display:none;margin-top:12px"></div>
     </div>
     <div class="form-card"><h2>CSVインポート</h2>
         <p class="help" style="margin-bottom:12px">編集済みCSVをアップロードしてデータを上書きします。</p>
         <div class="fg"><label class="fl">施設データ (hospitals.csv)</label><input type="file" class="fi" id="importHospFile" accept=".csv" style="padding:8px"><button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="importCSV('hospitals')">&#x1F4E4; インポート</button></div>
         <div class="fg"><label class="fl">医療従事者 (staff.csv)</label><input type="file" class="fi" id="importStaffFile" accept=".csv" style="padding:8px"><button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="importCSV('staff')">&#x1F4E4; インポート</button></div>
+        <div class="fg"><label class="fl">アポイント (appointments.csv)</label><input type="file" class="fi" id="importApptFile" accept=".csv" style="padding:8px"><button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="importCSV('appointments')">&#x1F4E4; インポート</button></div>
     </div>
 </div>
 </div>
@@ -777,16 +799,21 @@ function addApptFromTab(){
 
 /* === CSV EXPORT/IMPORT === */
 function exportCSV(type){
-    var csv,fn;if(type==='hospitals'){csv=genHospCSV();fn='hospitals.csv'}else{csv=genStaffCSV();fn='staff.csv'}
+    var csv,fn;
+    if(type==='hospitals'){csv=genHospCSV();fn='hospitals.csv'}
+    else if(type==='staff'){csv=genStaffCSV();fn='staff.csv'}
+    else{csv=genApptCSV();fn='appointments.csv'}
     var bom='\uFEFF',blob=new Blob([bom+csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=fn;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
     var el=document.getElementById('exportMailLink'),subj=encodeURIComponent('病院管理データ - '+fn),body=encodeURIComponent(fn+' をダウンロードしました。このメールに添付して送信してください。');
     el.innerHTML='<a href="mailto:?subject='+subj+'&body='+body+'" class="btn btn-outline" style="display:inline-block;width:auto;padding:10px 20px">&#x1F4E7; メールアプリで送信</a>';el.style.display='block';toast(fn+' をダウンロードしました');
 }
 function importCSV(type){
-    var fileId=type==='hospitals'?'importHospFile':'importStaffFile';var fi=document.getElementById(fileId);if(!fi.files.length){toast('ファイルを選択してください','error');return}
+    var fileId=type==='hospitals'?'importHospFile':type==='staff'?'importStaffFile':'importApptFile';
+    var fi=document.getElementById(fileId);if(!fi.files.length){toast('ファイルを選択してください','error');return}
     var reader=new FileReader();reader.onload=function(e){var text=e.target.result;if(text.charCodeAt(0)===0xFEFF)text=text.substring(1);
         if(type==='hospitals'){parseHospitalsCSV(text);if(cfg)saveH();renderDash();renderSubView();toast('施設データをインポートしました（'+hospitals.length+'件）')}
-        else{parseStaffCSV(text);if(cfg)saveS();renderStaffList();toast('医療従事者をインポートしました（'+staffMembers.length+'件）')}};
+        else if(type==='staff'){parseStaffCSV(text);if(cfg)saveS();renderStaffList();toast('医療従事者をインポートしました（'+staffMembers.length+'件）')}
+        else{parseAppointmentsCSV(text);if(cfg)saveA();renderCalendar();toast('アポイントをインポートしました（'+appointments.length+'件）')}};
     reader.readAsText(fi.files[0],'UTF-8');
 }
 

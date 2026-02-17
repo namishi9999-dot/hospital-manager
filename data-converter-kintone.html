@@ -4,7 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="データ変換">
+    <meta name="application-name" content="データコンバーター">
+    <meta name="theme-color" content="#0f4c81">
+    <link id="apple-touch-icon" rel="apple-touch-icon" sizes="180x180">
+    <link id="favicon" rel="icon" type="image/png" sizes="192x192">
     <title>Kintone データコンバーター</title>
+    <script>
+    /* コンバーターアプリアイコン生成 (SVG→Canvas→PNG→apple-touch-icon) */
+    (function(){
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0f4c81"/><stop offset="100%" stop-color="#2980b9"/></linearGradient></defs><rect width="512" height="512" rx="80" fill="url(%23bg2)"/><rect x="80" y="130" width="160" height="200" rx="14" fill="%23ffffff" opacity="0.92"/><rect x="100" y="155" width="120" height="14" rx="4" fill="%231a6fc4"/><rect x="100" y="180" width="90" height="10" rx="4" fill="%23b0c8e8"/><rect x="100" y="200" width="110" height="10" rx="4" fill="%23b0c8e8"/><rect x="100" y="220" width="80" height="10" rx="4" fill="%23b0c8e8"/><rect x="270" y="180" width="160" height="200" rx="14" fill="%23ffffff" opacity="0.92"/><rect x="290" y="205" width="120" height="14" rx="4" fill="%23e67e22"/><rect x="290" y="230" width="90" height="10" rx="4" fill="%23f5cda0"/><rect x="290" y="250" width="110" height="10" rx="4" fill="%23f5cda0"/><rect x="290" y="270" width="80" height="10" rx="4" fill="%23f5cda0"/><path d="M240 220 L270 220" stroke="%23ffffff" stroke-width="10" stroke-linecap="round"/><polygon points="268,208 288,220 268,232" fill="%23ffffff"/><path d="M272 290 L240 290" stroke="%23ffffff" stroke-width="10" stroke-linecap="round"/><polygon points="242,278 222,290 242,302" fill="%23ffffff"/></svg>';
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=512;c.height=512;
+        var ctx=c.getContext('2d');ctx.drawImage(img,0,0);
+        var url=c.toDataURL('image/png');
+        document.getElementById('apple-touch-icon').href=url;
+        document.getElementById('favicon').href=url;
+      };
+      img.src='data:image/svg+xml;charset=utf-8,'+svg;
+    })();
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.4.1/papaparse.min.js"></script>
     <style>
