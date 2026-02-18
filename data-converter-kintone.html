@@ -386,11 +386,11 @@ function showFacilityPreview() {
 function convertFacilityExcel() {
     if (!facilityData) return showStatus('facility-preview', 'ファイルを選択してください', 'error');
     try {
-        // 列マッピング（0始まりインデックス）:
-        //  3=施設名, 4=都道府県, 5=市区町村, 6=住所, 7=電話
-        //  9=一般+療養（病床数）
-        //  140=透析患者数, 141=HDF患者数, 142=β2MG吸着患者数
-        //  143=透析ベッド数, 144=コンソール台数
+        // 列マッピング（0始まりインデックス / Excelの実際の列）:
+        //  3=施設名(D列), 4=都道府県(E列), 5=市区町村(F列), 6=住所(G列), 7=電話(H列)
+        //  9=一般+療養（病床数）(J列)
+        //  139=透析患者数(EJ列), 140=HDF患者数(EK列), 141=β2MG吸着患者数(EL列)
+        //  142=透析ベッド数(EM列), 143=コンソール台数(EN列)
         const toStr = v => (v === null || v === undefined) ? '' : v.toString();
         const mapped = [];
         for (let i = 1; i < facilityData.length; i++) {
@@ -407,11 +407,11 @@ function convertFacilityExcel() {
                     Targets: '',
                     BedCount: '',
                     ICUBeds: '',
-                    DialysisBeds: toStr(row[143]),
-                    DialysisPatients: toStr(row[140]),
-                    HDFPatients: toStr(row[141]),
-                    BetaMGPatients: toStr(row[142]),
-                    ConsoleCount: toStr(row[144]),
+                    DialysisPatients: toStr(row[139]),
+                    HDFPatients: toStr(row[140]),
+                    BetaMGPatients: toStr(row[141]),
+                    DialysisBeds: toStr(row[142]),
+                    ConsoleCount: toStr(row[143]),
                     GeneralBeds: toStr(row[9]),
                     DialysisRenewalYear: ''
                 });
