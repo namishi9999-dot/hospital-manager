@@ -490,7 +490,7 @@ function renderSubView(){
 }
 function renderAllView(){
     var rb=cfg?'<div class="refresh-bar"><button class="btn-refresh" onclick="refreshGH()">&#x1F504; GitHubから更新</button></div>':'';
-    return'<div class="view-header"><div class="view-title">全施設一覧</div><div class="view-count">'+hospitals.length+'件</div></div>'+rb+'<div class="search-wrap"><input type="text" class="search-input" id="subSearch" placeholder="施設名・住所で検索..."></div><div id="subList">'+renderCards(hospitals)+'</div>';
+    return'<div class="view-header"><div class="view-title">全施設一覧</div><div class="view-count">'+hospitals.length+'件</div></div>'+rb+'<div class="search-wrap"><input type="text" class="search-input" id="subSearch" placeholder="施設名・住所・従事者名・病床数で検索..."><div class="search-hint" style="font-size:11px;color:var(--text-sub);margin-top:4px;padding:0 4px">例：施設名、医療従事者名、病床数、透析患者数、β2MG吸着患者数など</div></div><div id="subList">'+renderCards(hospitals)+'</div>';
 }
 
 /* --- Prefecture view with target cross-filter --- */
@@ -600,14 +600,36 @@ function renderSchedResults(){
 function renderCards(list){if(!list.length)return'<div class="empty"><div class="empty-icon">&#x1F4ED;</div><div class="empty-text">施設が登録されていません</div></div>';var h='';list.forEach(function(ho,i){h+=cardStandalone(ho,i)});return h}
 function cardStandalone(h,idx){return'<div class="h-card-standalone" onclick="showDetail('+idx+')"><div class="h-info"><div class="h-name">'+esc(h.Name||'')+'</div><div class="h-sub">'+esc(h.Prefecture||'')+' '+esc(h.City||'')+(h.Phone?' ・ '+esc(h.Phone):'')+'</div></div>'+badgesHTML(h)+'<span class="h-chevron">&#x203A;</span></div>'}
 function cardInGroup(h,idx){return'<div class="h-card" onclick="showDetail('+idx+')"><div class="h-info"><div class="h-name">'+esc(h.Name||'')+'</div><div class="h-sub">'+esc(h.City||'')+(h.Phone?' ・ '+esc(h.Phone):'')+'</div></div>'+badgesHTML(h)+'<span class="h-chevron">&#x203A;</span></div>'}
-function badgesHTML(h){return''}
+function badgesHTML(h){
+    var badges='';
+    // 医療従事者数
+    var staffCount=staffMembers.filter(function(s){return s.HospitalName===h.Name}).length;
+    if(staffCount>0)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#e8f4fd;color:#0f4c81">👥 '+staffCount+'名</span>';
+    // 医療統計データ
+    if(h.DialysisPatients)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#fef3e6;color:#d97706">透析 '+h.DialysisPatients+'</span>';
+    if(h.DialysisBeds)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#f0fdf4;color:#16a34a">ベッド '+h.DialysisBeds+'</span>';
+    if(h.GeneralBeds)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#fef3e6;color:#d97706">一般 '+h.GeneralBeds+'</span>';
+    if(h.BetaMGPatients)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#f3e8ff;color:#7c3aed">β2MG '+h.BetaMGPatients+'</span>';
+    if(h.ConsoleCount)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#fecaca;color:#dc2626">台 '+h.ConsoleCount+'</span>';
+    return badges?'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;margin-bottom:6px">'+badges+'</div>':'';
+}
 function togglePref(el,p){el.classList.toggle('open');var it=el.nextElementSibling;it.classList.toggle('open');openPrefs[p]=it.classList.contains('open')}
 function onSubSearch(kw){
     var le=document.getElementById('subList');if(!le)return;
     var src=[];if(currentView==='all')hospitals.forEach(function(h,i){src.push({h:h,idx:i})});
     else if(currentView.indexOf('target_')===0){var tn=currentView.substring(7);hospitals.forEach(function(h,i){if(getTargets(h).indexOf(tn)>=0)src.push({h:h,idx:i})})}
     if(!kw){var html='';src.forEach(function(item){html+=cardStandalone(item.h,item.idx)});le.innerHTML=html||'<div class="empty"><div class="empty-text">該当なし</div></div>';return}
-    var f=src.filter(function(item){var h=item.h;return(h.Name||'').indexOf(kw)>=0||(h.Prefecture||'').indexOf(kw)>=0||(h.City||'').indexOf(kw)>=0||(h.Address||'').indexOf(kw)>=0});
+    var kwLower=kw.toLowerCase();
+    var f=src.filter(function(item){var h=item.h;
+        // 施設名・住所・都道府県・市町村で検索
+        if((h.Name||'').indexOf(kw)>=0||(h.Prefecture||'').indexOf(kw)>=0||(h.City||'').indexOf(kw)>=0||(h.Address||'').indexOf(kw)>=0)return true;
+        // 医療統計データ（数値で検索 - 文字列化して比較）
+        if((h.DialysisBeds||'').toString()===kw||(h.DialysisPatients||'').toString()===kw||(h.HDFPatients||'').toString()===kw||(h.BetaMGPatients||'').toString()===kw||(h.ConsoleCount||'').toString()===kw||(h.GeneralBeds||'').toString()===kw||(h.BedCount||'').toString()===kw||(h.ICUBeds||'').toString()===kw)return true;
+        // 医療従事者名で検索
+        var staffMatch=staffMembers.filter(function(s){return s.HospitalName===h.Name&&(s.Name||'').toLowerCase().indexOf(kwLower)>=0});
+        if(staffMatch.length>0)return true;
+        return false;
+    });
     if(f.length){var fh='';f.forEach(function(item){fh+=cardStandalone(item.h,item.idx)});le.innerHTML=fh}else le.innerHTML='<div class="empty"><div class="empty-icon">&#x1F50D;</div><div class="empty-text">該当する施設がありません</div></div>';
 }
 
