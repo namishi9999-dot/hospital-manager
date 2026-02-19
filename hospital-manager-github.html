@@ -309,7 +309,7 @@
 /* === STATE === */
 var hospitals=[],staffMembers=[],targets=[],jobTypes=[],schedules=[],appointments=[];
 var cfg=null,currentIdx=-1,currentStaffIdx=-1,currentView=null,dataLoaded=false,openPrefs={};
-var calendarDate=new Date(),calendarSelectedDate=null,editingApptId=null;
+var calendarDate=new Date(),calendarSelectedDate=null,editingApptId=null,copiedAppt=null;
 
 /* === UTIL === */
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
@@ -793,6 +793,7 @@ function renderDayDetail(ds){
         if(a.Notes)html+='<div class="appt-meta">&#x1F4DD; '+esc(a.Notes)+'</div>';
         html+='<div class="appt-actions">';
         if(!isC)html+='<button class="btn btn-success btn-sm" style="margin:0" onclick="confirmAppt(\''+esc(a.ID)+'\')">&#x2714; 確定</button>';
+        html+='<button class="btn btn-info btn-sm" style="margin:0;background:#e0f2fe;color:#0284c7" onclick="copyAppt(\''+esc(a.ID)+'\')">&#x1F4CB; コピー</button>';
         html+='<button class="btn btn-outline btn-sm" style="margin:0" onclick="editAppt(\''+esc(a.ID)+'\')">&#x270F; 編集</button>';
         html+='<button class="btn btn-danger btn-sm" style="margin:0" onclick="deleteAppt(\''+esc(a.ID)+'\')">&#x1F5D1; 削除</button>';
         html+='</div></div>'});
@@ -801,6 +802,7 @@ function renderDayDetail(ds){
 
 /* === APPOINTMENT CRUD === */
 function openAddAppt(ds){
+    if(copiedAppt)return openAddApptFromCopy();
     var html='<div class="fg"><label class="fl">タイトル *</label><input type="text" class="fi" id="appt-title"></div>';
     html+='<div class="fg"><label class="fl">施設</label><div class="hosp-search-wrap"><input type="text" class="fi hosp-search-input" id="appt-hospital" placeholder="施設名を入力して検索..." autocomplete="off" oninput="filterHospList(\'appt-hospital\',\'hsList-apptModal\')" onfocus="filterHospList(\'appt-hospital\',\'hsList-apptModal\')"><input type="hidden" id="appt-hospital-val"><div class="hosp-search-list" id="hsList-apptModal"></div></div></div>';
     html+='<div class="fg"><label class="fl">担当者</label><select class="fi" id="appt-staff"><option value="">-- 施設を選択 --</option></select></div>';
@@ -812,7 +814,7 @@ function openAddAppt(ds){
     document.getElementById('apptModalTitle').textContent='予定の追加';document.getElementById('apptFormWrap').innerHTML=html;document.getElementById('appointmentModal').classList.add('show');
 }
 function onApptHospChange(){var hn=document.getElementById('appt-hospital-val').value,sel=document.getElementById('appt-staff');sel.innerHTML='<option value="">-- 選択 --</option>';if(!hn)return;staffMembers.filter(function(s){return s.HospitalName===hn}).forEach(function(s){sel.innerHTML+='<option value="'+esc(s.Name)+'">'+esc(s.Name)+' ('+esc(s.JobType)+')</option>'})}
-function saveNewAppt(){var t=document.getElementById('appt-title').value.trim(),d=document.getElementById('appt-date').value;if(!t||!d){toast('タイトルと日付は必須です','error');return}appointments.push({ID:genId(),Title:t,HospitalName:document.getElementById('appt-hospital-val').value,StaffName:document.getElementById('appt-staff').value,Date:d,Time:document.getElementById('appt-time').value,Status:document.getElementById('appt-status').value,Notes:document.getElementById('appt-notes').value});closeModal('appointmentModal');if(cfg)saveA();renderCalendar();toast('予定を登録しました')}
+function saveNewAppt(){var t=document.getElementById('appt-title').value.trim(),d=document.getElementById('appt-date').value;if(!t||!d){toast('タイトルと日付は必須です','error');return}appointments.push({ID:genId(),Title:t,HospitalName:document.getElementById('appt-hospital-val').value,StaffName:document.getElementById('appt-staff').value,Date:d,Time:document.getElementById('appt-time').value,Status:document.getElementById('appt-status').value,Notes:document.getElementById('appt-notes').value});copiedAppt=null;closeModal('appointmentModal');if(cfg)saveA();renderCalendar();toast('予定を登録しました')}
 function editAppt(id){
     editingApptId=id;var a=appointments.find(function(x){return x.ID===id});if(!a)return;
     var html='<div class="fg"><label class="fl">タイトル *</label><input type="text" class="fi" id="appt-title" value="'+esc(a.Title||'')+'"></div>';
@@ -828,6 +830,26 @@ function editAppt(id){
 function saveEditAppt(){var t=document.getElementById('appt-title').value.trim(),d=document.getElementById('appt-date').value;if(!t||!d){toast('タイトルと日付は必須です','error');return}var idx=appointments.findIndex(function(a){return a.ID===editingApptId});if(idx<0)return;appointments[idx]={ID:editingApptId,Title:t,HospitalName:document.getElementById('appt-hospital-val').value,StaffName:document.getElementById('appt-staff').value,Date:d,Time:document.getElementById('appt-time').value,Status:document.getElementById('appt-status').value,Notes:document.getElementById('appt-notes').value};closeModal('appointmentModal');if(cfg)saveA();renderCalendar();toast('予定を更新しました')}
 function deleteAppt(id){if(!confirm('この予定を削除しますか？'))return;appointments=appointments.filter(function(a){return a.ID!==id});if(cfg)saveA();renderCalendar();toast('予定を削除しました')}
 function confirmAppt(id){var a=appointments.find(function(x){return x.ID===id});if(!a)return;if(!confirm('「'+a.Title+'」を確定しますか？\n同じタイトルの他の候補日は自動削除されます。'))return;a.Status='confirmed';appointments=appointments.filter(function(x){if(x.ID===id)return true;if(x.Title===a.Title&&x.Status==='candidate')return false;return true});if(cfg)saveA();renderCalendar();toast('予定を確定しました')}
+function copyAppt(id){
+    var a=appointments.find(function(x){return x.ID===id});if(!a)return;
+    copiedAppt={Title:a.Title,HospitalName:a.HospitalName,StaffName:a.StaffName,Date:a.Date,Time:a.Time||'',Status:'candidate',Notes:a.Notes};
+    toast('予定をコピーしました。新規登録フォームで日付や時間を変更してください');
+    openAddApptFromCopy();
+}
+function openAddApptFromCopy(){
+    if(!copiedAppt)return openAddAppt();
+    var html='<div class="fg"><label class="fl">タイトル *</label><input type="text" class="fi" id="appt-title" value="'+esc(copiedAppt.Title||'')+'"></div>';
+    html+='<div class="fg"><label class="fl">施設</label><div class="hosp-search-wrap"><input type="text" class="fi hosp-search-input" id="appt-hospital" value="'+esc(copiedAppt.HospitalName||'')+'" placeholder="施設名を入力して検索..." autocomplete="off" oninput="filterHospList(\'appt-hospital\',\'hsList-apptModal\')" onfocus="filterHospList(\'appt-hospital\',\'hsList-apptModal\')"><input type="hidden" id="appt-hospital-val" value="'+esc(copiedAppt.HospitalName||'')+'"><div class="hosp-search-list" id="hsList-apptModal"></div></div></div>';
+    html+='<div class="fg"><label class="fl">担当者</label><select class="fi" id="appt-staff"><option value="">-- 施設を選択 --</option>';if(copiedAppt.HospitalName){staffMembers.filter(function(s){return s.HospitalName===copiedAppt.HospitalName}).forEach(function(s){html+='<option value="'+esc(s.Name)+'"'+(s.Name===copiedAppt.StaffName?' selected':'')+'>'+esc(s.Name)+' ('+esc(s.JobType)+')</option>'})}html+='</select></div>';
+    html+='<div class="fg"><label class="fl">日付 *</label><input type="date" class="fi" id="appt-date" value="'+(copiedAppt.Date||'')+'"></div>';
+    html+='<div class="fg"><label class="fl">時間</label><input type="time" class="fi" id="appt-time" value="'+(copiedAppt.Time||'')+'"></div>';
+    html+='<div class="fg"><label class="fl">ステータス</label><select class="fi" id="appt-status"><option value="candidate">候補</option><option value="confirmed">確定</option></select></div>';
+    html+='<div class="fg"><label class="fl">メモ</label><textarea class="fi" id="appt-notes">'+esc(copiedAppt.Notes||'')+'</textarea></div>';
+    html+='<button class="btn btn-success" onclick="saveNewAppt()">&#x2705; 登録する</button><button class="btn btn-outline" onclick="closeModal(\'appointmentModal\')">キャンセル</button>';
+    document.getElementById('apptModalTitle').textContent='予定の新規登録（コピーから）';
+    document.getElementById('apptFormWrap').innerHTML=html;
+    document.getElementById('appointmentModal').classList.add('show');
+}
 function addApptFromTab(){
     var t=document.getElementById('inp-atitle').value.trim(),d=document.getElementById('inp-adate').value;if(!t||!d){toast('タイトルと日付は必須です','error');return}
     appointments.push({ID:genId(),Title:t,HospitalName:document.getElementById('inp-ahospital-val').value,StaffName:document.getElementById('inp-astaff').value,Date:d,Time:document.getElementById('inp-atime').value,Status:document.getElementById('inp-astatus').value,Notes:document.getElementById('inp-anotes').value});
