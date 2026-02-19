@@ -51,15 +51,15 @@
         .pref-items{display:none;border-top:1px solid var(--border)}.pref-items.open{display:block}
         .h-card{display:flex;align-items:center;padding:14px 16px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--border)}
         .h-card:last-child{border-bottom:none}.h-card:active{background:#f7f8fa}
-        .h-card-standalone{background:var(--card);border-radius:var(--radius);margin-bottom:8px;box-shadow:var(--shadow);display:flex;align-items:center;padding:14px 16px;cursor:pointer;transition:background .15s,transform .15s}
+        .h-card-standalone{background:var(--card);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);padding:14px 16px;cursor:pointer;transition:background .15s,transform .15s;display:flex;flex-direction:column}
         .h-card-standalone:active{transform:scale(.99);background:#f7f8fa}
-        .h-info{flex:1;min-width:0}
-        .h-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .h-sub{font-size:12px;color:var(--text-sub);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .h-info{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .h-name{font-size:16px;font-weight:800;line-height:1.4;word-wrap:break-word;flex:1}
+        .h-sub{font-size:12px;color:var(--text-sub);margin-top:8px;display:flex;gap:12px;flex-wrap:wrap}
         .h-badges{display:flex;gap:4px;margin-left:8px;flex-shrink:0;flex-wrap:wrap}
         .h-badge{font-size:10px;padding:2px 8px;border-radius:8px;font-weight:700;white-space:nowrap}
         .h-badge-target{background:var(--accent-light);color:#b45309}
-        .h-chevron{color:var(--border);margin-left:6px;font-size:16px}
+        .h-chevron{color:var(--border);margin-left:auto;flex-shrink:0;font-size:20px;align-self:flex-start;margin-top:2px}
         .refresh-bar{display:flex;justify-content:flex-end;margin-bottom:12px}
         .btn-refresh{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 16px;font-size:12px;font-weight:600;color:var(--primary);cursor:pointer;transition:all .2s}
         .btn-refresh:active{background:var(--primary-light)}
@@ -598,20 +598,25 @@ function renderSchedResults(){
 
 /* === CARD RENDERERS === */
 function renderCards(list){if(!list.length)return'<div class="empty"><div class="empty-icon">&#x1F4ED;</div><div class="empty-text">施設が登録されていません</div></div>';var h='';list.forEach(function(ho,i){h+=cardStandalone(ho,i)});return h}
-function cardStandalone(h,idx){return'<div class="h-card-standalone" onclick="showDetail('+idx+')"><div class="h-info"><div class="h-name">'+esc(h.Name||'')+'</div><div class="h-sub">'+esc(h.Prefecture||'')+' '+esc(h.City||'')+(h.Phone?' ・ '+esc(h.Phone):'')+'</div></div>'+badgesHTML(h)+'<span class="h-chevron">&#x203A;</span></div>'}
+function cardStandalone(h,idx){return'<div class="h-card-standalone" onclick="showDetail('+idx+')"><div class="h-info"><div class="h-name">'+esc(h.Name||'')+'</div><span class="h-chevron">&#x203A;</span></div><div class="h-sub"><span>'+esc(h.Prefecture||'')+' '+esc(h.City||'')+''+(h.Phone?' ・ '+esc(h.Phone):'')+' </span></div>'+badgesHTML(h)+'</div>'}
 function cardInGroup(h,idx){return'<div class="h-card" onclick="showDetail('+idx+')"><div class="h-info"><div class="h-name">'+esc(h.Name||'')+'</div><div class="h-sub">'+esc(h.City||'')+(h.Phone?' ・ '+esc(h.Phone):'')+'</div></div>'+badgesHTML(h)+'<span class="h-chevron">&#x203A;</span></div>'}
 function badgesHTML(h){
-    var badges='';
+    var data=[];
     // 医療従事者数
     var staffCount=staffMembers.filter(function(s){return s.HospitalName===h.Name}).length;
-    if(staffCount>0)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#e8f4fd;color:#0f4c81">👥 '+staffCount+'名</span>';
+    if(staffCount>0)data.push({label:'スタッフ',value:staffCount+'名',color:'#e8f4fd','text-color':'#0f4c81'});
     // 医療統計データ
-    if(h.DialysisPatients)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#fef3e6;color:#d97706">透析 '+h.DialysisPatients+'</span>';
-    if(h.DialysisBeds)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#f0fdf4;color:#16a34a">ベッド '+h.DialysisBeds+'</span>';
-    if(h.GeneralBeds)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#fef3e6;color:#d97706">一般 '+h.GeneralBeds+'</span>';
-    if(h.BetaMGPatients)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#f3e8ff;color:#7c3aed">β2MG '+h.BetaMGPatients+'</span>';
-    if(h.ConsoleCount)badges+='<span class="h-badge" style="font-size:11px;padding:3px 8px;background:#fecaca;color:#dc2626">台 '+h.ConsoleCount+'</span>';
-    return badges?'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;margin-bottom:6px">'+badges+'</div>':'';
+    if(h.GeneralBeds)data.push({label:'一般',value:h.GeneralBeds,color:'#fef3e6','text-color':'#d97706'});
+    if(h.DialysisPatients)data.push({label:'透析患者',value:h.DialysisPatients+'人',color:'#fef3e6','text-color':'#d97706'});
+    if(h.DialysisBeds)data.push({label:'透析ベッド',value:h.DialysisBeds,color:'#f0fdf4','text-color':'#16a34a'});
+    if(h.HDFPatients)data.push({label:'HDF',value:h.HDFPatients+'人',color:'#fff0f6','text-color':'#be185d'});
+    if(h.BetaMGPatients)data.push({label:'β2MG',value:h.BetaMGPatients+'人',color:'#f3e8ff','text-color':'#7c3aed'});
+    if(h.ConsoleCount)data.push({label:'コンソール',value:h.ConsoleCount,color:'#fecaca','text-color':'#dc2626'});
+    if(!data.length)return'';
+    var html='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px;margin-top:10px">';
+    data.forEach(function(d){html+='<div style="background:'+d.color+';padding:6px 8px;border-radius:6px;font-size:11px;text-align:center"><div style="color:'+d['text-color']+';font-weight:700;font-size:13px">'+d.value+'</div><div style="color:'+d['text-color']+';font-size:10px;margin-top:2px">'+d.label+'</div></div>'});
+    html+='</div>';
+    return html;
 }
 function togglePref(el,p){el.classList.toggle('open');var it=el.nextElementSibling;it.classList.toggle('open');openPrefs[p]=it.classList.contains('open')}
 function onSubSearch(kw){
