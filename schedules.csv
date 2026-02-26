@@ -2,3 +2,5 @@ HospitalName,DayOfWeek,Period,Slot,StaffName
 サンプル総合病院,月,AM,1,田中太郎
 サンプル総合病院,月,AM,2,佐藤花子
 サンプル総合病院,木,PM,1,田中太郎
+三豊総合病院,水,AM,1,和多 一
+三豊総合病院,木,PM,1,和多 一
